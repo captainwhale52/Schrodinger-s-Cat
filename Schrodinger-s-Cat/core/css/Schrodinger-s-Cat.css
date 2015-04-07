@@ -58,6 +58,10 @@
         margin: 15px 0 0 0;
         display: block;
     }
+
+    img { 
+        pointer-events: none;
+    }
 }
 
 @media all {
@@ -326,9 +330,7 @@
         margin: 0 auto 0 auto;
         background-color: #453748;
         opacity: 0.925;
-    }
-
-    
+    }    
 
     .chapter-text div {
         max-width: 620px;
@@ -347,6 +349,7 @@
     }
 
     .choice {
+        cursor: pointer;
         color: #d5cfe5;
         font-weight: 600;
         background-color: #4e485c;
