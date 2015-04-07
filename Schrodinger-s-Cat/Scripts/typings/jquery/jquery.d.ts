@@ -3929,6 +3929,8 @@ interface JQuery {
     queue(queueName: string, callback: Function): JQuery;
 
     selectpicker(name?: any, value?: any): any;
+
+    jrumble(attr?: any): any;
 }
 declare module "jquery" {
     export = $;

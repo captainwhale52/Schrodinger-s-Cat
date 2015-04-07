@@ -18,29 +18,124 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="app.css" />
+    <Content Include="content\image\bg_chapter1.jpg" />
+    <Content Include="content\image\bg_chapter1_blur.jpg" />
+    <Content Include="content\image\bg_frontcover.jpg" />
+    <Content Include="content\image\bg_frontcover_blur.jpg" />
+    <Content Include="core\css\app.css" />
+    <Content Include="core\css\chapterheader.css" />
+    <Content Include="core\css\chapterimage.css" />
+    <Content Include="core\css\loader.css" />
+    <Content Include="core\css\maincontent.css" />
+    <Content Include="core\css\mainheader.css" />
+    <Content Include="core\css\font\bonvenocf-light\BonvenoCF-Light-demo.html" />
+    <Content Include="core\css\font\bonvenocf-light\BonvenoCF-Light-webfont.svg" />
+    <Content Include="core\css\font\bonvenocf-light\specimen_files\BonvenoCF-Light-cleartype.png" />
+    <Content Include="core\css\font\bonvenocf-light\specimen_files\easytabs.js" />
+    <Content Include="core\css\font\bonvenocf-light\specimen_files\grid_12-825-55-15.css" />
+    <Content Include="core\css\font\bonvenocf-light\specimen_files\specimen_stylesheet.css" />
+    <Content Include="core\css\font\bonvenocf-light\stylesheet.css" />
+    <Content Include="core\css\navpanel.css" />
+    <Content Include="core\css\nextchapter.css" />
+    <Content Include="core\css\Schrodinger-s-Cat.css">
+      <DependentUpon>Schrodinger-s-Cat.css.bundle</DependentUpon>
+    </Content>
+    <Content Include="core\css\Schrodinger-s-Cat.min.css">
+      <DependentUpon>Schrodinger-s-Cat.css</DependentUpon>
+    </Content>
+    <Content Include="core\image\arrow_down.png" />
+    <Content Include="core\image\arrow_down2x.png" />
+    <Content Include="core\image\arrow_right.png" />
+    <Content Include="core\image\arrow_right2x.png" />
+    <Content Include="core\image\blank.jpg" />
+    <Content Include="core\image\close.png" />
+    <Content Include="core\image\close2x.png" />
+    <Content Include="core\image\loading.gif" />
+    <Content Include="core\image\menu.png" />
+    <Content Include="core\image\menu2x.png" />
+    <Content Include="core\image\play.png" />
+    <Content Include="core\image\play2x.png" />
+    <Content Include="core\image\sound_off.png" />
+    <Content Include="core\image\sound_off2x.png" />
+    <Content Include="core\image\sound_on.png" />
+    <Content Include="core\image\sound_on2x.png" />
+    <Content Include="core\js\Schrodinger-s-Cat.js">
+      <DependentUpon>Schrodinger-s-Cat.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="core\js\Schrodinger-s-Cat.min.js">
+      <DependentUpon>Schrodinger-s-Cat.js</DependentUpon>
+    </Content>
     <Content Include="core\lib\backbone\backbone.js" />
-    <Content Include="core\lib\bootstrap\css\bootstrap.css" />
-    <Content Include="core\lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="core\lib\bootstrap\js\bootstrap.js" />
     <Content Include="core\lib\jquery\jquery-2.1.3.js" />
+    <Content Include="core\lib\jrumble\jquery.jrumble.1.3.js" />
     <Content Include="core\lib\momentjs\moment.js" />
     <Content Include="core\lib\underscore\underscore.js" />
+    <Content Include="favicons\android-chrome-144x144.png" />
+    <Content Include="favicons\android-chrome-192x192.png" />
+    <Content Include="favicons\android-chrome-36x36.png" />
+    <Content Include="favicons\android-chrome-48x48.png" />
+    <Content Include="favicons\android-chrome-72x72.png" />
+    <Content Include="favicons\android-chrome-96x96.png" />
+    <Content Include="favicons\apple-touch-icon-114x114.png" />
+    <Content Include="favicons\apple-touch-icon-120x120.png" />
+    <Content Include="favicons\apple-touch-icon-144x144.png" />
+    <Content Include="favicons\apple-touch-icon-152x152.png" />
+    <Content Include="favicons\apple-touch-icon-180x180.png" />
+    <Content Include="favicons\apple-touch-icon-57x57.png" />
+    <Content Include="favicons\apple-touch-icon-60x60.png" />
+    <Content Include="favicons\apple-touch-icon-72x72.png" />
+    <Content Include="favicons\apple-touch-icon-76x76.png" />
+    <Content Include="favicons\apple-touch-icon-precomposed.png" />
+    <Content Include="favicons\apple-touch-icon.png" />
+    <Content Include="favicons\browserconfig.xml" />
+    <Content Include="favicons\favicon-16x16.png" />
+    <Content Include="favicons\favicon-194x194.png" />
+    <Content Include="favicons\favicon-32x32.png" />
+    <Content Include="favicons\favicon-96x96.png" />
+    <Content Include="favicons\favicon.ico" />
+    <Content Include="favicons\mstile-144x144.png" />
+    <Content Include="favicons\mstile-150x150.png" />
+    <Content Include="favicons\mstile-310x150.png" />
+    <Content Include="favicons\mstile-310x310.png" />
+    <Content Include="favicons\mstile-70x70.png" />
     <Content Include="index.html" />
+    <Content Include="psd\Schrodinger_s+Cat+-+Story+Structure.jpg" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="core\js\app.ts" />
+    <TypeScriptCompile Include="core\js\controller\router.ts" />
+    <TypeScriptCompile Include="core\js\model\chapter.ts" />
+    <TypeScriptCompile Include="core\js\model\model.ts" />
+    <TypeScriptCompile Include="core\js\model\passage.ts" />
+    <TypeScriptCompile Include="core\js\view\chapterheader.ts" />
+    <TypeScriptCompile Include="core\js\view\chapterimage.ts" />
+    <TypeScriptCompile Include="core\js\view\loader.ts" />
+    <TypeScriptCompile Include="core\js\view\maincontent.ts" />
+    <TypeScriptCompile Include="core\js\view\mainheader.ts" />
+    <TypeScriptCompile Include="core\js\view\navpanel.ts" />
+    <TypeScriptCompile Include="core\js\view\nextchapter.ts" />
+    <TypeScriptCompile Include="core\js\view\view.ts" />
     <TypeScriptCompile Include="Scripts\typings\backbone\backbone.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\underscore\underscore.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="core\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="core\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="core\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="core\js\Schrodinger-s-Cat.js.bundle">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="core\js\Schrodinger-s-Cat.min.js.map">
+      <DependentUpon>Schrodinger-s-Cat.min.js</DependentUpon>
+    </Content>
+    <Content Include="core\css\Schrodinger-s-Cat.css.bundle">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="core\css\font\bonvenocf-light\BonvenoCF-Light-webfont.eot" />
+    <Content Include="core\css\font\bonvenocf-light\BonvenoCF-Light-webfont.ttf" />
+    <Content Include="core\css\font\bonvenocf-light\BonvenoCF-Light-webfont.woff" />
+    <Content Include="favicons\manifest.json" />
+    <Content Include="psd\favicon.psd" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -49,10 +144,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="core\css\" />
-    <Folder Include="core\image\" />
     <Folder Include="core\json\" />
-    <Folder Include="core\js\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
@@ -66,23 +158,14 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>50525</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50525/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

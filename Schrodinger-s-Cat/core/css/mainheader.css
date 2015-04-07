@@ -1,0 +1,46 @@
+﻿@media all {
+    /* Main Header */
+    .main-header.menu {
+        text-align: center;
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: -50px;
+        -moz-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        -webkit-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+
+    .main-header.menu .toggle-menu {
+        padding-top: 0;
+    }
+    .main-header .toggle-menu {
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 24px;
+        cursor: pointer;
+        display: inline-block;
+        padding: 15px 30px 15px 15px;
+    }
+
+    .main-header .toggle-menu:before {
+        padding: 0;
+        content: url("../image/menu.png");
+        content: -webkit-image-set(url("../image/menu.png") 1x, url("../image/menu2x.png") 2x);
+    }
+
+    .menu {
+        right: 0;
+        height: 50px;
+        padding: 0;
+        background-color: #0a090b;
+        opacity: 0.85;
+        color: #aaaaaa;
+        font-size: 16px;
+        line-height: 50px;
+        z-index: 2;
+    }
+
+}

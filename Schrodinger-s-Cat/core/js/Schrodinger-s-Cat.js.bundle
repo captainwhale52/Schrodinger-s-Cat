@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<bundle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://vswebessentials.com/schemas/v1/bundle.xsd">
+  <settings>
+    <!--Determines if the bundle file should be automatically optimized after creation/update.-->
+    <minify>true</minify>
+    <!--Determine whether to generate/re-generate this bundle on building the solution.-->
+    <runOnBuild>false</runOnBuild>
+    <!--Specifies a custom subfolder to save files to. By default, compiled output will be placed in the same folder and nested under the original file.-->
+    <outputDirectory />
+  </settings>
+  <!--The order of the <file> elements determines the order of the files in the bundle.-->
+  <files>
+    <!--Libraries-->
+    <file>/core/lib/underscore/underscore.js</file>
+    <file>/core/lib/momentjs/moment.js</file>
+    <file>/core/lib/jquery/jquery-2.1.3.js</file>
+    <file>/core/lib/backbone/backbone.js</file>
+    <file>/core/lib/jrumble/jquery.jrumble.1.3.js</file>
+
+    <!--Javascripts-->
+    <file>/core/js/app.js</file>
+
+    <!--View-->
+    <file>/core/js/view/view.js</file>
+    <file>/core/js/view/navpanel.js</file>
+    <file>/core/js/view/mainheader.js</file>
+    <file>/core/js/view/chapterheader.js</file>
+    <file>/core/js/view/chapterimage.js</file>
+    <file>/core/js/view/maincontent.js</file>
+    <file>/core/js/view/nextchapter.js</file>
+    <file>/core/js/view/loader.js</file>
+
+    <!--Model-->
+    <file>/core/js/model/model.js</file>
+    <file>/core/js/model/chapter.js</file>
+    <file>/core/js/model/passage.js</file>
+
+    <!--Controller-->
+    <file>/core/js/controller/router.js</file>
+  </files>
+</bundle>
