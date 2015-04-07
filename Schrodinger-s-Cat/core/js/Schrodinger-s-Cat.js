@@ -15322,7 +15322,7 @@ var SchrodingersCat;
             that.mNextChapter.render();
             that.isSystemScrolling = false;
             that.resize();
-            //that.scrollToTop();
+            that.scrollToTop();
             that.addEventListener();
         };
         View.prototype.renderContents = function (passage, curChapter, nextChapter) {
@@ -15353,7 +15353,7 @@ var SchrodingersCat;
             that.mNextChapter.renderChapter(nextChapter);
             that.isSystemScrolling = false;
             that.resize();
-            //that.scrollToTop();
+            that.scrollToTop();
             that.addEventListener();
         };
         View.prototype.resize = function () {
