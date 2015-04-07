@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="core\js\app.ts" />
+    <TypeScriptCompile Include="core\js\controller\player.ts" />
     <TypeScriptCompile Include="core\js\controller\router.ts" />
     <TypeScriptCompile Include="core\js\model\chapter.ts" />
     <TypeScriptCompile Include="core\js\model\model.ts" />
@@ -160,6 +161,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="content\music\" />
     <Folder Include="core\json\" />
   </ItemGroup>
   <PropertyGroup>

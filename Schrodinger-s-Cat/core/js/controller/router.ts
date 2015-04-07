@@ -27,9 +27,12 @@ module SchrodingersCat {
             this.navigate("map/" + FMS.getDefaultZoom() + "/" + FMS.getDefaultLat() + "/" + FMS.getDefaultLng() + "/" + FMS.getDefaultInterval()
                 + "/" + moment(new Date()).subtract(6, 'month').valueOf() + "/" + moment(new Date()).valueOf() + "/" + moment(new Date()).valueOf(), { trigger: true, replace: true });
             */
+
+            SCP.pauseBG();
         }
         act(cnum: any) {
             cnum = parseInt(cnum);
+            
             SCV.getLoader().show();
             console.log("we have loaded act " + cnum);
             SCV.setViewType(ViewType.Content);
@@ -41,6 +44,8 @@ module SchrodingersCat {
             //SCV.getChapterHeader().renderChapter(SCM.getChapters().findWhere({ cid: cnum }));
             //SCV.getNextChapter().renderChapter(SCM.getChapters().findWhere({ cid: (cnum + 1) }));
             SCV.getLoader().animatedHide();
+
+            SCP.playBG(cnum);
         }
         /*
         map(zoom: number, lat: number, lng: number, interval: number, start: number, end: number, cur: number) {

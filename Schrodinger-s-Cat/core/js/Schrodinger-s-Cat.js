@@ -15267,6 +15267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var SCV;
 var SCM;
 var SCR;
+var SCP;
 var BASE_URL;
 var CONTENT_URL;
 var CONTENT_IMAGE_URL;
@@ -15277,6 +15278,7 @@ $(document).ready(function () {
     CONTENT_IMAGE_URL = CONTENT_URL + "image/";
     SCM = new SchrodingersCat.Model();
     SCV = new SchrodingersCat.View({ el: $("body") });
+    SCP = new SchrodingersCat.Player();
     SCR = new SchrodingersCat.Router();
     SCR.start();
     //SCV.render();
@@ -15471,6 +15473,14 @@ var SchrodingersCat;
             that.$('.toggle-menu').on('click', function () {
                 that.toggle();
             });
+            that.$('#play').off('click');
+            that.$('#play').on('click', function () {
+                SCP.resumeBG();
+            });
+            that.$('#pause').off('click');
+            that.$('#pause').on('click', function () {
+                SCP.pauseBG();
+            });
         };
         NavPanel.prototype.show = function () {
             var that = this;
@@ -15488,6 +15498,17 @@ var SchrodingersCat;
             }
             else {
                 that.hide();
+            }
+        };
+        NavPanel.prototype.setPlayPauseButton = function (_isPlaying) {
+            var that = this;
+            if (_isPlaying) {
+                that.$('#play').hide();
+                that.$('#pause').show();
+            }
+            else {
+                that.$('#play').show();
+                that.$('#pause').hide();
             }
         };
         return NavPanel;
@@ -15629,7 +15650,7 @@ var SchrodingersCat;
         }
         ChapterHeader.prototype.render = function () {
             var that = this;
-            if (SCV.getViewType() == 0 /* Front */) {
+            if (SCV.getViewType() == ViewType.Front) {
                 var template = _.template(SCVChapterHeaderTemplateForCover);
                 var data = {
                     cnum: 'Perspective Demons',
@@ -15650,7 +15671,7 @@ var SchrodingersCat;
         };
         ChapterHeader.prototype.renderChapter = function (chapter) {
             var that = this;
-            if (SCV.getViewType() == 0 /* Front */) {
+            if (SCV.getViewType() == ViewType.Front) {
             }
             else {
                 var template = _.template(SCVChapterHeaderTemplate);
@@ -15665,7 +15686,7 @@ var SchrodingersCat;
         };
         ChapterHeader.prototype.resize = function () {
             var that = this;
-            if (SCV.getViewType() == 0 /* Front */) {
+            if (SCV.getViewType() == ViewType.Front) {
                 that.$el.css({ top: Math.round(SCV.getWrapperHeight() / 2 - 50) });
                 that.$el.css({ 'padding-top': 30, 'padding-bottom': 20 });
             }
@@ -15679,7 +15700,7 @@ var SchrodingersCat;
             that.$el.off('click');
             that.$el.on('click', function () {
                 SCV.setSystemScrolling(true);
-                if (SCV.getViewType() == 0 /* Front */) {
+                if (SCV.getViewType() == ViewType.Front) {
                     SCR.navigate('act/1', { trigger: true, replace: false });
                 }
                 else {
@@ -15687,6 +15708,7 @@ var SchrodingersCat;
                         SCV.getMainHeader().checkVisibility();
                         SCV.setSystemScrolling(false);
                     });
+                    SCP.resumeBG();
                 }
             });
         };
@@ -16281,7 +16303,7 @@ var SchrodingersCat;
         Router.prototype.home = function () {
             SCV.getLoader().show();
             console.log("we have loaded the home page");
-            SCV.setViewType(0 /* Front */);
+            SCV.setViewType(ViewType.Front);
             SCV.render();
             SCV.getLoader().animatedHide();
             //this.navigate('act/1');
@@ -16289,20 +16311,70 @@ var SchrodingersCat;
             this.navigate("map/" + FMS.getDefaultZoom() + "/" + FMS.getDefaultLat() + "/" + FMS.getDefaultLng() + "/" + FMS.getDefaultInterval()
                 + "/" + moment(new Date()).subtract(6, 'month').valueOf() + "/" + moment(new Date()).valueOf() + "/" + moment(new Date()).valueOf(), { trigger: true, replace: true });
             */
+            SCP.pauseBG();
         };
         Router.prototype.act = function (cnum) {
             cnum = parseInt(cnum);
             SCV.getLoader().show();
             console.log("we have loaded act " + cnum);
-            SCV.setViewType(1 /* Content */);
+            SCV.setViewType(ViewType.Content);
             var passage = SCM.getPassages().findWhere({ name: SCM.getChapters().findWhere({ cid: cnum }).get("passage") });
             SCV.renderContents(passage, SCM.getChapters().findWhere({ cid: cnum }), SCM.getChapters().findWhere({ cid: (cnum + 1) }));
             //SCV.getChapterHeader().renderChapter(SCM.getChapters().findWhere({ cid: cnum }));
             //SCV.getNextChapter().renderChapter(SCM.getChapters().findWhere({ cid: (cnum + 1) }));
             SCV.getLoader().animatedHide();
+            SCP.playBG(cnum);
         };
         return Router;
     })(Backbone.Router);
     SchrodingersCat.Router = Router;
+})(SchrodingersCat || (SchrodingersCat = {}));
+
+///#source 1 1 /core/js/controller/player.js
+/// <reference path="..\..\..\Scripts\typings\backbone\backbone.d.ts" /> 
+var SchrodingersCat;
+(function (SchrodingersCat) {
+    var Player = (function () {
+        function Player() {
+        }
+        Player.prototype.playBG = function (cid) {
+            var that = this;
+            if (cid == 1) {
+                that.bgAudio = $('#act_1_audio_1').get(0);
+                that.bgAudio.loop = false;
+                if (that.bgAudio.currentTime)
+                    that.bgAudio.currentTime = 0;
+                that.bgAudio.play();
+                SCV.getNavPanel().setPlayPauseButton(true);
+                // Add Player end event listener
+                $('#act_1_audio_1').bind('ended', function () {
+                    SCV.getNavPanel().setPlayPauseButton(false);
+                });
+            }
+            else {
+                if (that.bgAudio != undefined) {
+                    that.bgAudio.pause();
+                }
+                SCV.getNavPanel().setPlayPauseButton(false);
+                console.log("- Audio is not found. -");
+            }
+        };
+        Player.prototype.pauseBG = function () {
+            var that = this;
+            if (that.bgAudio != undefined) {
+                that.bgAudio.pause();
+            }
+            SCV.getNavPanel().setPlayPauseButton(false);
+        };
+        Player.prototype.resumeBG = function () {
+            var that = this;
+            if (that.bgAudio != undefined) {
+                that.bgAudio.play();
+            }
+            SCV.getNavPanel().setPlayPauseButton(true);
+        };
+        return Player;
+    })();
+    SchrodingersCat.Player = Player;
 })(SchrodingersCat || (SchrodingersCat = {}));
 
