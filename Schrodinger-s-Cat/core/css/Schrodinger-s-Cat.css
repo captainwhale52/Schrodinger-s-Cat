@@ -321,7 +321,7 @@
 
     .chapter-text {
         font-size: 16px;
-        padding: 60px 25px 30px 25px;
+        padding: 60px 25px 40px 25px;
         letter-spacing: 0.01em;
         
         display: block;
@@ -409,6 +409,10 @@
         opacity: 0.9;
         text-transform: uppercase;
         letter-spacing: 6px;
+    }
+
+    .next-chapter-title-blank {
+        height: 102px !important;
     }
 
     .next {

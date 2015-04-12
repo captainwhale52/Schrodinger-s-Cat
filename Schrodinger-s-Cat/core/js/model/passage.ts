@@ -39,6 +39,8 @@ module SchrodingersCat {
             this.defaults = <any>{
                 "context": "",
                 "next": "",
+                "variable": "",
+                "value": "",
             };
         }
         parse(response: any, options?: any): any {

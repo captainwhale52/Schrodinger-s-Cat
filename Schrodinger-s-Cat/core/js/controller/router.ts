@@ -36,10 +36,12 @@ module SchrodingersCat {
             SCV.getLoader().show();
             console.log("we have loaded act " + cnum);
             SCV.setViewType(ViewType.Content);
+            SCM.initializeChapters();
+            SCM.initializeVariables(cnum);
+            SCM.initializePassages(cnum);
 
             var passage = SCM.getPassages().findWhere({ name: SCM.getChapters().findWhere({ cid: cnum }).get("passage") });
             
-
             SCV.renderContents(passage, SCM.getChapters().findWhere({ cid: cnum }), SCM.getChapters().findWhere({ cid: (cnum + 1) }));
             //SCV.getChapterHeader().renderChapter(SCM.getChapters().findWhere({ cid: cnum }));
             //SCV.getNextChapter().renderChapter(SCM.getChapters().findWhere({ cid: (cnum + 1) }));

@@ -29,6 +29,26 @@ module SchrodingersCat {
             that.resize();
             that.addEventListener();
         }
+
+        renderChapter(chapter: Chapter): any {
+            var that: ChapterImage = this;
+            if (SCV.getViewType() == ViewType.Front) {
+
+            } else {
+                var template = _.template(SCVChapterImageTemplate);
+                var data = {
+                    image: CONTENT_IMAGE_URL + chapter.get('image'),
+                    image_blur: CONTENT_IMAGE_URL + chapter.get('blur'),
+                };
+                that.$el.html(template(data));
+            }
+
+            that.$el.css({ 'background-image': 'url(' + data.image_blur + ')' });
+
+            that.resize();
+            that.addEventListener();
+        }
+
         resize(): any {
             var that: ChapterImage = this;
             that.$('img').height(SCV.getWrapperHeight());

@@ -8,12 +8,10 @@ module SchrodingersCat {
         }
         render(): any {
             var that: NextChapter = this;
-            var template = _.template(SCVNextChapterTemplate);
+            var template = _.template(SCVNextChapterBlankTemplate);
 
             var data = {
-                cnum: '',
-                name: '',
-                hash: '',
+
             };
             that.$el.html(template(data));
             that.resize();
@@ -62,4 +60,9 @@ SCVNextChapterTemplate +=           '<span class="chapter-arrow next"></span>';
 SCVNextChapterTemplate +=       '</div>';
 SCVNextChapterTemplate +=   '</a>';
 
+
+var SCVNextChapterBlankTemplate = '';
+SCVNextChapterBlankTemplate += '';
+SCVNextChapterBlankTemplate += '<div class="next-chapter-title next-chapter-title-blank">';
+SCVNextChapterBlankTemplate += '</div>';
 

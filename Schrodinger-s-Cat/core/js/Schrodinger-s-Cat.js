@@ -15350,9 +15350,10 @@ var SchrodingersCat;
             that.mNavPanel.render();
             that.mMainHeader.renderChapter(curChapter);
             that.mChapterHeader.renderChapter(curChapter);
-            that.mChapterImage.render();
+            that.mChapterImage.renderChapter(curChapter);
             that.mMainContent.renderPassage(passage);
-            that.mNextChapter.renderChapter(nextChapter);
+            that.mNextChapter.render();
+            //that.mNextChapter.renderChapter(nextChapter);
             that.isSystemScrolling = false;
             that.resize();
             that.scrollToTop();
@@ -15375,7 +15376,8 @@ var SchrodingersCat;
         View.prototype.scrollToNextPassage = function () {
             var that = this;
             that.setSystemScrolling(false);
-            $("html, body").animate({ scrollTop: $(window).scrollTop() + 100 }, 750).promise().done(function () {
+            //$("html, body").animate({ scrollTop: $(window).scrollTop() + 100 }, 500).promise().done(function () {
+            $("html, body").animate({ scrollTop: that.passageScrollElement.offset().top - 100 }, 950).promise().done(function () {
                 that.getMainHeader().checkVisibility();
                 that.setSystemScrolling(false);
             });
@@ -15526,12 +15528,14 @@ SCVNavPanelTemplate += '<a class="toggle-menu"></a>';
 SCVNavPanelTemplate += '</div>'; // .top-panel
 SCVNavPanelTemplate += '<div class="navwrapper">';
 SCVNavPanelTemplate += '<% _.each(chapters, function (item) { %>';
+SCVNavPanelTemplate += '<% if (item.get("visible") == true) { %>';
 SCVNavPanelTemplate += '<a href="<%= item.get("hash") %>">';
 SCVNavPanelTemplate += '<% if (item.get("cnum") != "") { %>';
 SCVNavPanelTemplate += '<span class="chapter_number"><%= item.get("cnum") %></span>';
 SCVNavPanelTemplate += '<% } %>';
 SCVNavPanelTemplate += '<%= item.get("name") %>';
 SCVNavPanelTemplate += '</a>';
+SCVNavPanelTemplate += '<% } %>';
 SCVNavPanelTemplate += '<% }); %>';
 SCVNavPanelTemplate += '</div>';
 SCVNavPanelTemplate += '</div>'; // #scrollable
@@ -15650,7 +15654,7 @@ var SchrodingersCat;
         }
         ChapterHeader.prototype.render = function () {
             var that = this;
-            if (SCV.getViewType() == ViewType.Front) {
+            if (SCV.getViewType() == 0 /* Front */) {
                 var template = _.template(SCVChapterHeaderTemplateForCover);
                 var data = {
                     cnum: 'Perspective Demons',
@@ -15671,7 +15675,7 @@ var SchrodingersCat;
         };
         ChapterHeader.prototype.renderChapter = function (chapter) {
             var that = this;
-            if (SCV.getViewType() == ViewType.Front) {
+            if (SCV.getViewType() == 0 /* Front */) {
             }
             else {
                 var template = _.template(SCVChapterHeaderTemplate);
@@ -15686,7 +15690,7 @@ var SchrodingersCat;
         };
         ChapterHeader.prototype.resize = function () {
             var that = this;
-            if (SCV.getViewType() == ViewType.Front) {
+            if (SCV.getViewType() == 0 /* Front */) {
                 that.$el.css({ top: Math.round(SCV.getWrapperHeight() / 2 - 50) });
                 that.$el.css({ 'padding-top': 30, 'padding-bottom': 20 });
             }
@@ -15700,7 +15704,7 @@ var SchrodingersCat;
             that.$el.off('click');
             that.$el.on('click', function () {
                 SCV.setSystemScrolling(true);
-                if (SCV.getViewType() == ViewType.Front) {
+                if (SCV.getViewType() == 0 /* Front */) {
                     SCR.navigate('act/1', { trigger: true, replace: false });
                 }
                 else {
@@ -15751,7 +15755,7 @@ var SchrodingersCat;
         }
         ChapterImage.prototype.render = function () {
             var that = this;
-            if (SCV.getViewType() == 0 /* Front */) {
+            if (SCV.getViewType() == ViewType.Front) {
                 var template = _.template(SCVChapterImageTemplate);
                 var data = {
                     image: CONTENT_IMAGE_URL + 'bg_frontcover.jpg',
@@ -15764,6 +15768,22 @@ var SchrodingersCat;
                 var data = {
                     image: CONTENT_IMAGE_URL + 'bg_chapter1.jpg',
                     image_blur: CONTENT_IMAGE_URL + 'bg_chapter1_blur.jpg'
+                };
+                that.$el.html(template(data));
+            }
+            that.$el.css({ 'background-image': 'url(' + data.image_blur + ')' });
+            that.resize();
+            that.addEventListener();
+        };
+        ChapterImage.prototype.renderChapter = function (chapter) {
+            var that = this;
+            if (SCV.getViewType() == ViewType.Front) {
+            }
+            else {
+                var template = _.template(SCVChapterImageTemplate);
+                var data = {
+                    image: CONTENT_IMAGE_URL + chapter.get('image'),
+                    image_blur: CONTENT_IMAGE_URL + chapter.get('blur'),
                 };
                 that.$el.html(template(data));
             }
@@ -15861,6 +15881,12 @@ var SchrodingersCat;
                 // add click event listener
                 $('.choice[data-next="' + model.get('next') + '"]').on('click', function () {
                     var item = $(this);
+                    SCV.passageScrollElement = item;
+                    if (item.attr('data-variable') != '' && item.attr('data-value') != '') {
+                        eval(item.attr('data-variable') + " = " + item.attr('data-value'));
+                        console.log(item.attr('data-variable') + " = " + item.attr('data-value'));
+                    }
+                    SCM.updatePassages();
                     setTimeout(function () {
                         if (SCM.getPassages().findWhere({ name: item.attr('data-next') }) != undefined) {
                             $('.choice').each(function () {
@@ -15870,7 +15896,7 @@ var SchrodingersCat;
                             });
                         }
                         that.appendPassage(SCM.getPassages().findWhere({ name: item.attr('data-next') }));
-                    }, 500 + Math.round(Math.random() * 200));
+                    }, 250 + Math.round(Math.random() * 200));
                 });
                 // add jrumble effect
                 $('.choice[data-next="' + model.get('next') + '"]').jrumble({ speed: 250, x: 0.2, y: 0.1 });
@@ -15905,6 +15931,12 @@ var SchrodingersCat;
                 that.addEventListener();
                 that.addChoicesEventListener(passage.get('choices'));
                 SCV.scrollToNextPassage();
+                // handling last passage
+                if (passage.get('isLast') == true) {
+                    SCM.setCurChapterComplete();
+                    var nextChapter = SCM.getChapters().findWhere({ cid: Math.round(SCM.getCurChapterNumber() + 1) });
+                    SCV.getNextChapter().renderChapter(nextChapter);
+                }
             }
             else {
                 console.log("- Passage is not found -");
@@ -15922,7 +15954,7 @@ SCVMainContentTemplate += '<span class="caps"><%= first %></span>';
 SCVMainContentTemplate += '<%= passage %>';
 SCVMainContentTemplate += '<div class="choice-wrapper">';
 SCVMainContentTemplate += '<% _.each(choices.models, function (choice) { %>';
-SCVMainContentTemplate += '<div class="choice" data-next="<%= choice.get("next") %>" data-fixed="false"><%= choice.get("context") %></div>';
+SCVMainContentTemplate += '<div class="choice" data-next="<%= choice.get("next") %>" data-fixed="false" data-variable="<%= choice.get("variable") %>" data-value="<%= choice.get("value") %>"><%= choice.get("context") %></div>';
 SCVMainContentTemplate += '<% }); %>';
 SCVMainContentTemplate += '</div>';
 SCVMainContentTemplate += '</div>';
@@ -15931,7 +15963,7 @@ SCVMainContentAppendTemplate += '';
 SCVMainContentAppendTemplate += '<%= passage %>';
 SCVMainContentAppendTemplate += '<div class="choice-wrapper">';
 SCVMainContentAppendTemplate += '<% _.each(choices.models, function (choice) { %>';
-SCVMainContentAppendTemplate += '<div class="choice" data-next="<%= choice.get("next") %>" data-fixed="false"><%= choice.get("context") %></div>';
+SCVMainContentAppendTemplate += '<div class="choice" data-next="<%= choice.get("next") %>" data-fixed="false" data-variable="<%= choice.get("variable") %>" data-value="<%= choice.get("value") %>"><%= choice.get("context") %></div>';
 SCVMainContentAppendTemplate += '<% }); %>';
 SCVMainContentAppendTemplate += '</div>';
 
@@ -15953,19 +15985,15 @@ var SchrodingersCat;
         }
         NextChapter.prototype.render = function () {
             var that = this;
-            var template = _.template(SCVNextChapterTemplate);
-            var data = {
-                cnum: '',
-                name: '',
-                hash: '',
-            };
+            var template = _.template(SCVNextChapterBlankTemplate);
+            var data = {};
             that.$el.html(template(data));
             that.resize();
             that.addEventListener();
         };
         NextChapter.prototype.renderChapter = function (chapter) {
             var that = this;
-            if (SCV.getViewType() == 0 /* Front */) {
+            if (SCV.getViewType() == ViewType.Front) {
             }
             else {
                 var template = _.template(SCVNextChapterTemplate);
@@ -15999,6 +16027,10 @@ SCVNextChapterTemplate += '<h2><%= name %></h2>';
 SCVNextChapterTemplate += '<span class="chapter-arrow next"></span>';
 SCVNextChapterTemplate += '</div>';
 SCVNextChapterTemplate += '</a>';
+var SCVNextChapterBlankTemplate = '';
+SCVNextChapterBlankTemplate += '';
+SCVNextChapterBlankTemplate += '<div class="next-chapter-title next-chapter-title-blank">';
+SCVNextChapterBlankTemplate += '</div>';
 
 ///#source 1 1 /core/js/view/loader.js
 /// <reference path="..\..\..\Scripts\typings\backbone\backbone.d.ts" />
@@ -16051,73 +16083,204 @@ SCVLoaderTemplate += '';
 
 ///#source 1 1 /core/js/model/model.js
 /// <reference path="..\..\..\Scripts\typings\backbone\backbone.d.ts" /> 
+var Asthma_Complete;
+var Asthma_Gilly_Read_Paper;
+var Asthma_Mother_Knows_Gilly_s_Wound;
+var Asthma_Gilly_Hurts_Mother;
+var ASthma_Gilly_Angry_To_Others;
 var SchrodingersCat;
 (function (SchrodingersCat) {
     var Model = (function () {
         function Model() {
-            this.mChapters = new SchrodingersCat.Chapters();
             this.initializeChapters();
-            this.initializePassages();
+            this.initializePassages(0);
         }
+        Model.prototype.getCurChapterNumber = function () {
+            return this.curChapterNumber;
+        };
+        Model.prototype.setCurChapterComplete = function () {
+            if (this.curChapterNumber == 1) {
+                Asthma_Complete = true;
+            }
+            this.initializeChapters();
+        };
         Model.prototype.initializeChapters = function () {
             var that = this;
-            that.mChapters.add(new SchrodingersCat.Chapter({ name: "HOME", cid: 0, hash: "", cnum: "", passage: "" }));
-            that.mChapters.add(new SchrodingersCat.Chapter({ name: "Asthma", cid: 1, hash: "#act/1", cnum: "01", passage: "asthma-begin" }));
-            that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Cat", cid: 2, hash: "#act/2", cnum: "02", passage: "" }));
+            this.mChapters = new SchrodingersCat.Chapters();
+            that.mChapters.add(new SchrodingersCat.Chapter({ name: "HOME", cid: 0, hash: "", cnum: "", passage: "", visible: true }));
+            that.mChapters.add(new SchrodingersCat.Chapter({ name: "Asthma", cid: 1, hash: "#act/1", cnum: "01", passage: "asthma-begin", visible: true, image: "bg_chapter1.jpg", blur: "bg_chapter1_blur.jpg" }));
+            if (Asthma_Complete == true) {
+                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Cat", cid: 2, hash: "#act/2", cnum: "02", passage: "cat-begin", visible: false, image: "bg_frontcover.jpg", blur: "bg_frontcover_blur.jpg" }));
+            }
             that.mChapters.sort();
         };
-        Model.prototype.initializePassages = function () {
+        Model.prototype.updateVariables = function () {
+            this.initializeVariables(this.curChapterNumber);
+        };
+        Model.prototype.initializeVariables = function (cnum) {
+            if (cnum == 1) {
+                Asthma_Complete = false;
+                Asthma_Gilly_Read_Paper = false;
+                Asthma_Mother_Knows_Gilly_s_Wound = false;
+                Asthma_Gilly_Hurts_Mother = false;
+                ASthma_Gilly_Angry_To_Others = false;
+            }
+        };
+        Model.prototype.updatePassages = function () {
+            this.initializePassages(this.curChapterNumber);
+        };
+        Model.prototype.initializePassages = function (cnum) {
             var that = this;
+            that.curChapterNumber = cnum;
             that.mPassages = new SchrodingersCat.Passages();
-            // act 1: asthma-begin
-            var passage = new SchrodingersCat.Passage({ name: 'asthma-begin', isLast: false, first: 'C', context: '<p>LINK! Gilly opens her eyes by the sound of shattering glass. She raises herself from the bed and notices pieces of window glass are shattered on the floor. She steps toward the window with deliberate slowness not to step on broken pieces, and leans on the window frame to see outside. There is no one on the street. By looking around her room again, Gilly finds out there is a small rock wrapped with a paper around shattered pieces of glass.</p>' });
-            var choices = new SchrodingersCat.Choices();
-            choices.add(new SchrodingersCat.Choice({ context: 'Gilly tries to grab the rock.', next: 'asthma-grab-rock-yes' }));
-            choices.add(new SchrodingersCat.Choice({ context: 'Gilly already knows what it is, since it\'s not the first time.', next: "asthma-grab-rock-no" }));
-            passage.set({ choices: choices });
-            that.mPassages.add(passage);
-            // act 1: asthma-grab-rock-no
-            var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-no', isLast: false, context: '<p>Gilly assumes it\'s from one of people who want blame her family for this catastrophe. She tries to find a horizon, but the sky is filled with thick gray dust. She lowers her eyes to the street. There are many cement rocks on the street come from buildings. Those buildings reveal steel frames out. From the cloud of dust, there is a figure walks toward her house. Gilly thinks it must be her mother. She tries to walk down stairs to greet her mother, but she forgets that broken pieces of glass are around her. With a short scream, she jumps onto her bed. The blood from her left foot is dying her white bed sheet. Gilly hears her mother opens the main door and running up to stairs.</p>' });
-            var choices = new SchrodingersCat.Choices();
-            choices.add(new SchrodingersCat.Choice({ context: 'Gilly covers her bleeding foot with bed sheet.', next: 'asthma-blood-cover-yes' }));
-            choices.add(new SchrodingersCat.Choice({ context: 'Gilly calls her mother for help.', next: 'asthma-blood-cover-no' }));
-            passage.set({ choices: choices });
-            that.mPassages.add(passage);
-            // act 1: asthma-grab-rock-yes
-            var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-yes', isLast: false, context: '<p>Gilly walks using only her toes not to step broken pieces. She tries to keep her balance, but, unfortunately, she has a poor sense of balance. She barely manages to grab the rock, and jumps onto her bed with a pain in her left foot. Her white bed sheet is being dyed with red. After taking a piece of glass from her foot, she unwraps a paper from the rock.</p><p>\'DIE! BITCHES! WITCHES!\' Someone may want to curse her and her mother with a red marker. Suddenly, Gilly hears squeaking noise of wooden door open. Gilly thinks it must be her mother. The squaking noise moves from the door to wooden stairs toward her room. A door of her room is slowly being opened.</p>' });
-            var choices = new SchrodingersCat.Choices();
-            choices.add(new SchrodingersCat.Choice({ context: 'Gilly sits still on her bed.', next: 'asthma-hide-paper-no' }));
-            choices.add(new SchrodingersCat.Choice({ context: 'Gilly throws the rock on the floor and hides the paper.', next: 'asthma-hide-paper-yes' }));
-            passage.set({ choices: choices });
-            that.mPassages.add(passage);
-            // act 1: asthma-blood-cover-yes
-            var passage = new SchrodingersCat.Passage({ name: 'asthma-blood-cover-yes', isLast: false, context: '<p>"Gilly!" Annemarie opens the door with calling her name with anxiety. Gilly doesn\' want to show her wound to her mother. Gilly brings her bed sheet more toward her to hide blood.</p><p>"I\'m fine, mom. I was just surpised by glasses on the ground. But, Mom! what happened on your face?"</p><p>Annemarie hastily cover bruise with her hand.</p><p>"It\'s nothing."</p>' });
-            var choices = new SchrodingersCat.Choices();
-            choices.add(new SchrodingersCat.Choice({ context: '"MOM!"', next: 'asthma-bruise-ask-yes' }));
-            choices.add(new SchrodingersCat.Choice({ context: '"Are you sure you are OK?"', next: 'asthma-bruise-ask-no' }));
-            passage.set({ choices: choices });
-            that.mPassages.add(passage);
-            // act 1: asthma-blood-cover-no
-            var passage = new SchrodingersCat.Passage({ name: 'asthma-blood-cover-no', isLast: false, context: '<p>"Mom!"</p><p>"Gilly!"</p><p>Annemarie opens the door.</p><p>"Gilly! Are you OK?"</p><p>Mother seems to be really shocked.</p><p>"I\'m fine. I just cut by broken glass."</p><p>Annemarie sits on the bed, and take the glass out from her foot carefully, and wrap Gilly\'s foot with her handkerchief.</p><p>"You should be careful, Gilly."</p><p>"I will, mom."</p><p>Gilly finds out bruise on her mother\'s face when she tries to hug.</p>' });
-            var choices = new SchrodingersCat.Choices();
-            choices.add(new SchrodingersCat.Choice({ context: '"MOM! What\'s this?"', next: 'asthma-bruise-ask-yes' }));
-            choices.add(new SchrodingersCat.Choice({ context: '"Are you sure you are OK?"', next: 'asthma-bruise-ask-no' }));
-            passage.set({ choices: choices });
-            that.mPassages.add(passage);
-            // act 1: asthma-bruise-ask-yes
-            var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-ask-yes', isLast: false, context: '<p>"Don\'t lie to me. What happened?"</p><p>Gilly\'s gray eyes seems to bore into her mother.</p><p>"It\'s just... you know... people doesn\'t like us. I tried to get some food from government supply truck, but people recognized me and beat me up. They call me bitch, witch. And I am sorry. I couldn\'t get any food today."</p>' });
-            var choices = new SchrodingersCat.Choices();
-            choices.add(new SchrodingersCat.Choice({ context: '"Mom, you don\'t need to be sorry, and I am the one who should apologize. If I am healthy..."', next: 'asthma-angry-others-no' }));
-            choices.add(new SchrodingersCat.Choice({ context: '"Mom! I can\'t stand anymore. I am gonna find them out and slap their faces 10 times!"', next: 'asthma-angry-others-yes' }));
-            passage.set({ choices: choices });
-            that.mPassages.add(passage);
+            if (cnum == 1) {
+                // act 1: asthma-begin
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-begin', isLast: false, first: 'C', context: '<p>LINK! Gilly opens her eyes by the sound of shattering glass. She raises herself from the bed and notices pieces of window glass are shattered on the floor. She steps toward the window with deliberate slowness not to step on broken pieces, and leans on the window frame to see outside. There is no one on the street. By looking around her room again, Gilly finds out there is a small rock wrapped with a paper around shattered pieces of glass.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Gilly tries to grab the rock.', next: 'asthma-grab-rock-yes', variable: 'Asthma_Gilly_Read_Paper', value: 'true' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'Gilly already knows what it is, since it\'s not the first time.', next: "asthma-grab-rock-no", variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-grab-rock-no
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-no', isLast: false, context: '<p>Gilly assumes it\'s from one of people who want blame her family for this catastrophe. She tries to find a horizon, but the sky is filled with thick gray dust. She lowers her eyes to the street. There are many cement rocks on the street come from buildings. Those buildings reveal steel frames out. From the cloud of dust, there is a figure walks toward her house. Gilly thinks it must be her mother. She tries to walk down stairs to greet her mother, but she forgets that broken pieces of glass are around her. With a short scream, she jumps onto her bed. The blood from her left foot is dying her white bed sheet. Gilly hears her mother opens the main door and running up to stairs.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Gilly covers her bleeding foot with bed sheet.', next: 'asthma-blood-cover-yes', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'Gilly calls her mother for help.', next: 'asthma-blood-cover-no', variable: 'Asthma_Mother_Knows_Gilly_s_Wound', value: 'true' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-grab-rock-yes
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-yes', isLast: false, context: '<p>Gilly walks using only her toes not to step broken pieces. She tries to keep her balance, but, unfortunately, she has a poor sense of balance. She barely manages to grab the rock, and jumps onto her bed with a pain in her left foot. Her white bed sheet is being dyed with red. After taking a piece of glass from her foot, she unwraps a paper from the rock.</p><p>\'DIE! BITCHES! WITCHES!\' Someone may want to curse her and her mother with a red marker. Suddenly, Gilly hears squeaking noise of wooden door open. Gilly cannot distinguish whether the source of noise is her mother. The squaking noise moves from the door to wooden stairs toward her room. A door of her room is slowly being opened.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Gilly stays still on her bed.', next: 'asthma-hide-paper-no', variable: 'Asthma_Mother_Knows_Gilly_s_Wound', value: 'true' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'Gilly hides the rock and paper under her bed sheet.', next: 'asthma-hide-paper-yes', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-hide-paper-no
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-hide-paper-no', isLast: false, context: '<p>"Gilly?"</p><p>Annemarie calls her daughter\'s name while opening the door.</p><p>"Gilly!!"</p><p>Annemarie runs toward Gilly and cuddles her in her arms.</p><p>"Are you OK, Gilly?"</p><p>Annemarie checks her daughter\'s safety, and finds the paper on Gilly\'s hand. She takes the paper from her daughter, and opens it. Gilly looks up her mother and watches her mother\'s eyes being dilated. But, there\'s more than that; Annemarie\'s face is covered with purplish bruise.</p><p>"Mom, what happened on your face?"</p><p>Annemarie hastily cover bruise with her hand.</p><p>"It\'s nothing."</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"MOM! Don\'t try lying to me."', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, is this what I think?"', next: 'asthma-bruise-assume-yes', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-hide-paper-yes
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-hide-paper-yes', isLast: false, context: '<p>"Gilly?"</p><p>Gilly instantaneously lying on the bed, covering her wounded foot with her bed sheet.</p><p>"Gilly?"</p><p>"Yes?"</p><p>Gilly opens her eyes and starts rubbing to pretend that she just wakes up.</p><p>"What, Mom?"</p><p>"What happened here, Gilly?"</p>Gilly sees her mother\'s eyes are dilated.</p><p>"I donno..."</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Maybe some kids played baseball."', next: 'asthma-hide-execuse-baseball', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"You know... the wind was strong last night."', next: 'asthma-hide-execuse-wind', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-hide-execuse-baseball
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-hide-execuse-baseball', isLast: false, context: '<p>"Kids played baseball in this early morning? In this dusty weather? What are you hiding from me, Gilly?"</p><p>"Nothing! Could you just leave me alone, Please?"</p><p>Gilly glances at Annemarie, asking her to leave the room. At the same time, Gilly notices a purplish bruise around Annemarie\'s eyes.</p>Annemarie notices Gilly\'s staring bruise and turns her head away in haste.<p>"Mom?</p><p>"What?"</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Nothing, just close the door when you leave."', next: 'asthma-bruise-ask-no', variable: 'Asthma_Gilly_Hurts_Mother', value: 'true' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, what happened on your face?"', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-hide-execuse-wind
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-hide-execuse-wind', isLast: false, context: '<p>"There was strong wind, but I don\'t think wind has an enough energy to break the window like this. Are you hiding something from me, Gilly?"</p><p>"Nothing! Could you just leave me alone, Please?"</p><p>Gilly glances at Annemarie, asking her to leave the room. At the same time, Gilly notices a purplish bruise around Annemarie\'s eyes.</p>Annemarie notices Gilly\'s staring bruise and turns her head away in haste.<p>"Mom?</p><p>"What?"</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Nothing, just close the door when you leave."', next: 'asthma-bruise-ask-no', variable: 'Asthma_Gilly_Hurts_Mother', value: 'true' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, what happened on your face?"', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-blood-cover-yes
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-blood-cover-yes', isLast: false, context: '<p>"Gilly!" Annemarie opens the door with calling her name with anxiety. Gilly doesn\' want to show her wound to her mother. Gilly brings her bed sheet more toward her to hide blood.</p><p>"I\'m fine, mom. I was just surpised by glasses on the ground. But, Mom! what happened on your face?"</p><p>Annemarie hastily cover bruise with her hand.</p><p>"It\'s nothing."</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"MOM! Don\'t try lying to me."', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, is this what I think?"', next: 'asthma-bruise-assume-yes', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-blood-cover-no
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-blood-cover-no', isLast: false, context: '<p>"Mom!"</p><p>"Gilly!"</p><p>Annemarie opens the door.</p><p>"Gilly! Are you OK?"</p><p>Mother seems to be really shocked.</p><p>"I\'m fine. I just cut by broken glass."</p><p>Annemarie sits on the bed, and take the glass out from her foot carefully, and wrap Gilly\'s foot with her handkerchief.</p><p>"You should be more careful, Gilly. You know your condition."</p><p>"I will, mom."</p><p>Gilly finds out bruise on her mother\'s face when she tries to hug.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, what happened on your face?"', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, is this what I think?"', next: 'asthma-bruise-assume-yes', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-bruise-assume-yes
+                if (Asthma_Gilly_Read_Paper == true && Asthma_Mother_Knows_Gilly_s_Wound == true) {
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-assume-yes', isLast: false, context: '<p>"It\'s not what you think. Wait here. I will bring a bandage."</p><p>Gilly is convinced that they did this to her mother, the same people who break her window. They blame her father and her family because they belive the reason their city got bombed is her father\'s experiment. Her father, Dr. Graff, is a genetic researcher. Her father barely talks about his research, so only few thing she knows are that her father made some kind of genetically mutated soldiers to win the war, and the enemy country poured huge amount of bomb into her city.</p><p>Annemarie comes back with a bandage with alchol. Gilly notices that her mother puts powder on her face to cover the bruise. Without saying a word, Annemarie cleans Gilly\'s wounded foot and put a bandage on. After a treatment, Annemarie is about to leave the room.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom. You can tell me the truth. I already know what happened."', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom, close the door please when you leave."', next: 'asthma-bruise-ask-no', variable: 'Asthma_Gilly_Hurts_Mother', value: 'true' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else if (Asthma_Gilly_Read_Paper == true && Asthma_Mother_Knows_Gilly_s_Wound == false) {
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-assume-yes', isLast: false, context: '<p>"It\'s not what you think. Wait here. I will clean this mess."</p><p>Gilly is convinced that they did this to her mother, the same people who break her window. They blame her father and her family because they belive the reason their city got bombed is her father\'s experiment. Her father, Dr. Graff, is a genetic researcher. Her father barely talks about his research, so only few thing she knows are that her father made some kind of genetically mutated soldiers to win the war, and the enemy country poured huge amount of bomb into her city.</p><p>Annemarie comes back. Gilly notices that her mother puts powder on her face to cover the bruise; but without saying a word, Gilly is watching her sweeping a floor with a broom. After cleaning the floor, Annemarie is about to leave the room.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom. You can tell me the truth. I already know what happened."', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom, close the door when you leave."', next: 'asthma-bruise-ask-no', variable: 'Asthma_Gilly_Hurts_Mother', value: 'true' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else if (Asthma_Gilly_Read_Paper == false && Asthma_Mother_Knows_Gilly_s_Wound == true) {
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-assume-yes', isLast: false, context: '<p>"It\'s not what you think. Wait here. I will bring a bandage."</p><p>Gilly is convinced that they did this to her mother, since it\'s not the first time. They blame her father and her family because they belive the reason their city got bombed is her father\'s experiment. Her father, Dr. Graff, is a genetic researcher. Her father barely talks about his research, so only few thing she knows are that her father made some kind of genetically mutated soldiers to win the war, and the enemy country poured huge amount of bomb into her city.</p><p>Annemarie comes back with a bandage with alchol. Gilly notices that her mother puts powder on her face to cover the bruise. Without saying a word, Annemarie cleans Gilly\'s wounded foot and put a bandage on. After a treatment, Annemarie is about to leave the room.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom. You can tell me the truth. I already know what happened."', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom, close the door when you leave."', next: 'asthma-bruise-ask-no', variable: 'Asthma_Gilly_Hurts_Mother', value: 'true' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else if (Asthma_Gilly_Read_Paper == false && Asthma_Mother_Knows_Gilly_s_Wound == false) {
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-assume-yes', isLast: false, context: '<p>"It\'s not what you think. Wait here. I will clean this mess."</p><p>Gilly is convinced that they did this to her mother, since it\'s not the first time. They blame her father and her family because they belive the reason their city got bombed is her father\'s experiment. Her father, Dr. Graff, is a genetic researcher. Her father barely talks about his research, so only few thing she knows are that her father made some kind of genetically mutated soldiers to win the war, and the enemy country poured huge amount of bomb into her city.</p><p>Annemarie comes back. Gilly notices that her mother puts powder on her face to cover the bruise; but without saying a word, Gilly is watching her sweeping a floor with a broom. After cleaning the floor, Annemarie is about to leave the room.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom. You can tell me the truth. I already know what happened."', next: 'asthma-bruise-ask-yes', variable: '', value: '' }));
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom, close the door when you leave."', next: 'asthma-bruise-ask-no', variable: 'Asthma_Gilly_Hurts_Mother', value: 'true' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                // act 1: asthma-bruise-ask-yes
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-ask-yes', isLast: false, context: '<p>Gilly\'s gray eyes seems to bore into her mother.</p><p>"It\'s just... you know... they don\'t like us. I tried to get some food from government supply truck, but people recognized me and beat me up. They call me bitch, witch. And... and... I am sorry. I couldn\'t get any food today."</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, you don\'t need to be sorry, and I am the one who should apologize. If I am not in this condition..."', next: 'asthma-angry-others-no', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom! I can\'t stand anymore. I am gonna find them out and slap their faces 10 times!"', next: 'asthma-angry-others-yes', variable: 'ASthma_Gilly_Angry_To_Others', value: 'true' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-bruise-ask-no
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-ask-no', isLast: false, context: '<p>"And don\'t interrupt me till dinner!"</p><p>Gilly shouts at the closed door. She knows how hurtful her word to her mother. She already knows there is no food for dinner in her house. Her mother probably was harrased by others while trying to get a government supply for her. She knows the truth, and she knows she shouldn\'t have acted like that, but she can\'t stand her mother\'s action to hide the truth. Actually, she hates herself more than that; she hates herself because she can\'t go outside to get food, and she hates herself because she can\'t do anything when her mother is situated in a danger. Being mad at her mother is only thing that she can do.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'She think it\'s better to apologize to her mother.', next: 'asthma-apologize-yes', variable: 'Asthma_Mother_Knows_Gilly_s_Wound', value: 'true' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'She can\'t think straight, so she can\'t make any decision.', next: 'asthma-apologize-no', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-angry-others-no
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-angry-others-no', isLast: true, context: '<p>"My daughter, Gilly, it\'s ok. You don\'t need to be sorry. I\'m just fine as you are with me."</p><p>Gilly can no longer control her feeling, and cries on her mother\'s bosom. Suddenly, her face turns red, and her eyes are extremely widen. Feeling being suffocated, she grasps her neck with hands. She is hardely breathing.</p><p>"Gilly! Gilly!! Hang on! I will bring an inhaler!"</p><p>Being falling to the bed, the last thing that Gilly sees before she closes her eyes is her mother running downstairs.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-angry-others-yes
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-angry-others-yes', isLast: true, context: '<p>Gilly tries to stand up from the bed; but feeling dizzy, she lethargically falls on the bed. Her face turns red, and her eyes are extremely widen. She notices it\'s coming. She graps her neck with hands to breathe, but it\'s not helpful at all. She is hardely breathing.</p><p>"Gilly! Gilly!! Hang on! I will bring an inhaler!"</p><p>The last thing that Gilly sees before she closes her eyes is that her mother running downstairs with screaming.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-apologize-yes
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-apologize-yes', isLast: true, context: '<p>Gilly stands up from her bed. Her left heel is still painful. Limping in her leg, she tries to go downstairs. As she moves her left foot, the blood drops on the floor. Feeling dizzy, she lethargically falls on the floor. Her face turns red, and her eyes are extremely widen. She notices it\'s coming. She graps her neck with hands to breathe, but it\'s not helpful at all. She is hardely breathing.</p><p>"Gilly! Gilly!! Hang on! I will bring an inhaler!"</p><p>The last thing that Gilly sees before she closes her eyes is her mother running downstairs with screaming.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 1: asthma-apologize-no
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-apologize-no', isLast: true, context: '<p>Gilly gives a sigh of resignation. She feels helpless. She is a huge burden to her mother in this sluggish city. She is holding back her tears. Suddenly, her face turns red, and her eyes are extremely widen. Feeling being suffocated, she grasps her neck with hands. She tries to reach the medicine on the night table next to her bed, but she falls on the ground.</p><p>"Gilly! Gilly!!"</p><p>Breathing heavily, the last thing that Gilly sees before she closes her eyes is her mother\'s feet running toward her.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+            }
+            else if (cnum == 2) {
+                // act 2: 
+                var passage = new SchrodingersCat.Passage({ name: 'cat-begin', isLast: false, context: '<p>Cat Begin!</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '', next: '', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: '', next: '', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+            }
             /*
             
-            // act 1:
+            // act 2:
             var passage = new Passage({ name: '', isLast: false, context: '<p></p>' });
             var choices = new Choices();
-            choices.add(new Choice({ context: '', next: '' }));
-            choices.add(new Choice({ context: '', next: '' }));
+            choices.add(new Choice({ context: '', next: '', variable: '', value: '' }));
+            choices.add(new Choice({ context: '', next: '', variable: '', value: '' }));
             passage.set({ choices: choices });
             that.mPassages.add(passage);
             
@@ -16154,6 +16317,9 @@ var SchrodingersCat;
                 "cnum": "",
                 "hash": "",
                 "passage": "",
+                "visible": "",
+                "image": "",
+                "blur": "",
             };
         }
         Chapter.prototype.parse = function (response, options) {
@@ -16246,6 +16412,8 @@ var SchrodingersCat;
             this.defaults = {
                 "context": "",
                 "next": "",
+                "variable": "",
+                "value": "",
             };
         }
         Choice.prototype.parse = function (response, options) {
@@ -16318,6 +16486,9 @@ var SchrodingersCat;
             SCV.getLoader().show();
             console.log("we have loaded act " + cnum);
             SCV.setViewType(ViewType.Content);
+            SCM.initializeChapters();
+            SCM.initializeVariables(cnum);
+            SCM.initializePassages(cnum);
             var passage = SCM.getPassages().findWhere({ name: SCM.getChapters().findWhere({ cid: cnum }).get("passage") });
             SCV.renderContents(passage, SCM.getChapters().findWhere({ cid: cnum }), SCM.getChapters().findWhere({ cid: (cnum + 1) }));
             //SCV.getChapterHeader().renderChapter(SCM.getChapters().findWhere({ cid: cnum }));

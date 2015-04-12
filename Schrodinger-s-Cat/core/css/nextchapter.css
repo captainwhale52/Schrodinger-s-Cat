@@ -12,6 +12,10 @@
         letter-spacing: 6px;
     }
 
+    .next-chapter-title-blank {
+        height: 102px !important;
+    }
+
     .next {
         display: inline-block;
     }
