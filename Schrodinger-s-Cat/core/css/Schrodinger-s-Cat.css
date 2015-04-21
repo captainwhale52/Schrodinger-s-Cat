@@ -63,7 +63,6 @@
         pointer-events: none;
     }
 }
-
 @media all {
     /* Main Menu */
     .main-nav {
@@ -380,7 +379,7 @@
 
 @media screen and (min-width: 641px)  {
     .chapter-text {
-        line-height: 30px;
+        line-height: 40px;
     }
 
     .chapter-text p {
@@ -395,6 +394,18 @@
     .choice {
         margin: 10px 5px 10px 5px !important;
         padding: 5px 10px 5px 10px !important;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .chapter-text {
+        line-height: 35px !important;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .chapter-text {
+        line-height: 30px !important;
     }
 }
 @media all {

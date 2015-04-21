@@ -34,6 +34,7 @@
     <file>/core/js/model/model.js</file>
     <file>/core/js/model/chapter.js</file>
     <file>/core/js/model/passage.js</file>
+    <file>/core/js/model/variable.js</file>
 
     <!--Controller-->
     <file>/core/js/controller/router.js</file>

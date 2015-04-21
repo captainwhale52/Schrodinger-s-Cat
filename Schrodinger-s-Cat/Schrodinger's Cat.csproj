@@ -125,6 +125,7 @@
     <TypeScriptCompile Include="core\js\model\chapter.ts" />
     <TypeScriptCompile Include="core\js\model\model.ts" />
     <TypeScriptCompile Include="core\js\model\passage.ts" />
+    <TypeScriptCompile Include="core\js\model\variable.ts" />
     <TypeScriptCompile Include="core\js\view\chapterheader.ts" />
     <TypeScriptCompile Include="core\js\view\chapterimage.ts" />
     <TypeScriptCompile Include="core\js\view\loader.ts" />
@@ -153,6 +154,8 @@
     <Content Include="core\css\font\bonvenocf-light\BonvenoCF-Light-webfont.woff" />
     <Content Include="favicons\manifest.json" />
     <Content Include="psd\favicon.psd" />
+    <Content Include="core\php\variable.php" />
+    <Content Include="core\php\variables.php" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
