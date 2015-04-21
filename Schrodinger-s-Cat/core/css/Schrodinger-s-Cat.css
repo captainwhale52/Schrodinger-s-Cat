@@ -329,7 +329,12 @@
         margin: 0 auto 0 auto;
         background-color: #453748;
         opacity: 0.925;
-    }    
+    }
+
+    .chapter-text i {
+        font-weight: 600;
+        padding-right: 10px;
+    }
 
     .chapter-text div {
         max-width: 620px;

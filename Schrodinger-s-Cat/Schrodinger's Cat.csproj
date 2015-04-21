@@ -156,6 +156,7 @@
     <Content Include="psd\favicon.psd" />
     <Content Include="core\php\variable.php" />
     <Content Include="core\php\variables.php" />
+    <Content Include="images.psd" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
