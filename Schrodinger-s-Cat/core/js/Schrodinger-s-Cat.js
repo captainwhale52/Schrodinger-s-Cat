@@ -16103,7 +16103,14 @@ var Asthma_Grab_Broom = false;
 var Asthma_Broom_Second_Floor = false;
 var Asthma_Shout_To_Mother = false;
 var Cat_Complete = false;
-var Variable_Array = new Array('Asthma_Complete', 'Asthma_Mother_Know_Wound', 'Asthma_Out_Bed', 'Asthma_Grab_Rock', 'Asthma_Take_Out_Glass', 'Asthma_On_First_Floor', 'Asthma_Grab_Broom', 'Asthma_Broom_Second_Floor', 'Asthma_Shout_To_Mother');
+var Cat_Go_Outside_Find_Cat = false;
+var Cat_Go_Outside_With_Broom = false;
+var Cat_Go_Outside_With_Inhaler = false;
+var Cat_Throw_Inhaler_Window = false;
+var Cat_Believe_Dad_Died = false;
+var Love_Lost_Broom = false;
+var Love_Lost_Shoe = false;
+var Variable_Array = new Array('Asthma_Complete', 'Asthma_Mother_Know_Wound', 'Asthma_Out_Bed', 'Asthma_Grab_Rock', 'Asthma_Take_Out_Glass', 'Asthma_On_First_Floor', 'Asthma_Grab_Broom', 'Asthma_Broom_Second_Floor', 'Asthma_Shout_To_Mother', 'Cat_Complete', 'Cat_Go_Outside_Find_Cat', 'Cat_Go_Outside_With_Broom', 'Cat_Go_Outside_With_Inhaler', 'Cat_Throw_Inhaler_Window', 'Cat_Believe_Dad_Died');
 var SchrodingersCat;
 (function (SchrodingersCat) {
     var Model = (function () {
@@ -16120,6 +16127,10 @@ var SchrodingersCat;
                 Asthma_Complete = true;
                 SCM.getVariables().addVariable('Asthma_Complete', 'true');
             }
+            else if (this.curChapterNumber == 2) {
+                Cat_Complete = true;
+                SCM.getVariables().addVariable('Cat_Complete', 'true');
+            }
             this.initializeChapters();
         };
         Model.prototype.initializeChapters = function () {
@@ -16134,10 +16145,10 @@ var SchrodingersCat;
                 that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Cat", cid: 2, hash: "#act/2", cnum: "02", passage: "cat-begin", visible: false, image: "bg_frontcover.jpg", blur: "bg_frontcover_blur.jpg" }));
             }
             if (Cat_Complete == true) {
-                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Love", cid: 2, hash: "#act/3", cnum: "03", passage: "love-begin", visible: true, image: "bg_frontcover.jpg", blur: "bg_frontcover_blur.jpg" }));
+                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Love", cid: 3, hash: "#act/3", cnum: "03", passage: "love-begin", visible: true, image: "bg_frontcover.jpg", blur: "bg_frontcover_blur.jpg" }));
             }
             else {
-                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Love", cid: 2, hash: "#act/3", cnum: "03", passage: "love-begin", visible: false, image: "bg_frontcover.jpg", blur: "bg_frontcover_blur.jpg" }));
+                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Love", cid: 3, hash: "#act/3", cnum: "03", passage: "love-begin", visible: false, image: "bg_frontcover.jpg", blur: "bg_frontcover_blur.jpg" }));
             }
             that.mChapters.sort();
         };
@@ -16173,6 +16184,11 @@ var SchrodingersCat;
                 });
             }
             else if (cnum == 2) {
+                Cat_Complete = false;
+                Cat_Go_Outside_Find_Cat = false;
+                Cat_Go_Outside_With_Broom = false;
+                Cat_Throw_Inhaler_Window = false;
+                Cat_Believe_Dad_Died = false;
                 $.each(that.mVariables.models, function (index, model) {
                     if (model.get('act') == 2) {
                         model.save({
@@ -16193,6 +16209,10 @@ var SchrodingersCat;
                         }
                     }
                 });
+            }
+            else if (cnum == 3) {
+                Love_Lost_Broom = false;
+                Love_Lost_Shoe = false;
             }
             //////////////////
             setTimeout(function () {
@@ -16229,21 +16249,25 @@ var SchrodingersCat;
                 passage.set({ choices: choices });
                 that.mPassages.add(passage);
                 // act 1: asthma-keep-looking-yes
-                var passage = new SchrodingersCat.Passage({ name: 'asthma-keep-looking-yes', isLast: false, context: '<p>With in your sight, many buildings are fully or partially destroyed. <i>How bleak the city is now...</i> With a sigh, you inhale the dusty air from yourside. Another fit of coughting seize you. Covering your mouth, you watch outside inspite of a dry hacking coughing, because you still have a hope that...<i> Wait a sec...</i></p><p>Something is coming toward you through a foggy air. You instinctively hide behind of a window frame. Dimly visible outline of head and shoulder tells you it\'s a human figure. As the figure comes closer to you, you recognize red hair, and a dark brown coat of your mom\'s.</p>' });
+                var passage = new SchrodingersCat.Passage({
+                    name: 'asthma-keep-looking-yes',
+                    isLast: false,
+                    context: '<p>With in your sight, many buildings are fully or partially destroyed. <i>How bleak the city is now...</i> With a sigh, you inhale the dusty air from yourside. Another fit of coughting seize you. Covering your mouth, you watch outside inspite of a dry hacking coughing, because you still have a hope that...<i> Wait a sec...</i></p><p>Something is coming toward you through a foggy air. You instinctively hide behind of a window frame. Dimly visible outline of head and shoulder tells you it\'s a human figure. As the figure comes closer to you, you recognize red hair, and a dark brown coat of your mom\'s.</p>'
+                });
                 var choices = new SchrodingersCat.Choices();
                 choices.add(new SchrodingersCat.Choice({ context: 'Run downstairs to greet mom.', next: 'asthma-greet-mother-yes', variable: 'Asthma_Take_Out_Glass', value: 'true' }));
                 choices.add(new SchrodingersCat.Choice({ context: 'Run back to bed to pretend sleeping.', next: 'asthma-greet-mother-no', variable: 'Asthma_Take_Out_Glass', value: 'false' }));
                 passage.set({ choices: choices });
                 that.mPassages.add(passage);
                 // act 1: asthma-greet-mother-yes
-                var passage = new SchrodingersCat.Passage({ name: 'asthma-greet-mother-yes', isLast: false, context: '<p>Being overexcited, you forgot the existence of glass pieces around you. <i>YOW!</i> Feeling a sharp and cutting pain in your left heel, you foward one more step to grab the rock, and look foward. The bed is two or thee steps away from you. You hop into the bed holding left food with left hand. Lifting your body using your arms again, you watch the white bed sheet is dying with a red. Holding your left foot with left hand, biting your lower lip with upper teeth, you pull the glass piece out with your right thumb and index finger.</p><p>"Ouch!"</p><p>Suddenly, a loud squaking noise of wooden door reaches you. After a few seconds, noise of someone\'s running up the stairs is running toward you.</p>' });
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-greet-mother-yes', isLast: false, context: '<p>Being overexcited, you forgot the existence of glass pieces around you. <i>YOW!</i> Feeling a sharp and cutting pain in your left heel, you foward one more step to grab the rock, and look foward. The bed is two or thee steps away from you. You hop into the bed holding left food with left hand. Lifting your body using your arms again, you watch the white bed sheet is dying with a red. Holding your left foot with left hand, biting your lower lip with upper teeth, you pull the glass piece out with your right thumb and index finger.</p><p>"Ouch!"</p><p>Suddenly, a loud squeaking noise of wooden door reaches you. After a few seconds, noise of someone\'s running up the stairs is running toward you.</p>' });
                 var choices = new SchrodingersCat.Choices();
                 choices.add(new SchrodingersCat.Choice({ context: 'Wrap your foot with bed sheet, and lie on the bed quickly.', next: 'asthma-cover-wound-yes', variable: 'Asthma_Mother_Know_Wound', value: 'false' }));
                 choices.add(new SchrodingersCat.Choice({ context: 'Stay sitting on the bed holding your foot with your hand.', next: 'asthma-hostile-mom-yes', variable: 'Asthma_Mother_Know_Wound', value: 'true' }));
                 passage.set({ choices: choices });
                 that.mPassages.add(passage);
                 // act 1: asthma-greet-mother-no
-                var passage = new SchrodingersCat.Passage({ name: 'asthma-greet-mother-no', isLast: false, context: '<p>Being in hurry, you forgot the existence of glass pieces around you. <i>YOW!</i> Feeling a sharp and cutting pain in your left heel, you foward one more step to grab the rock, and look foward. The bed is two or thee steps away from you. You hop into the bed holding left food with left hand. Lifting your body using your arms again, you watch the white bed sheet is dying with a red. You want to pull the glass out from your foot, but a loud squaking noise of wooden door reaches you. After a few seconds, noise of someone\'s running up the stairs is running toward you. You cover your foot with the bed sheet, and lie on the bed quickly.</p><p>Even though your eyes are closed, you can hear sound of door opening, and friction sound between the wooden floor and mom\'s boots.</p><p>"Gilly, wake up. I know you are awake."</p>' });
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-greet-mother-no', isLast: false, context: '<p>Being in hurry, you forgot the existence of glass pieces around you. <i>YOW!</i> Feeling a sharp and cutting pain in your left heel, you foward one more step to grab the rock, and look foward. The bed is two or thee steps away from you. You hop into the bed holding left food with left hand. Lifting your body using your arms again, you watch the white bed sheet is dying with a red. You want to pull the glass out from your foot, but a loud squeaking noise of wooden door reaches you. After a few seconds, noise of someone\'s running up the stairs is running toward you. You cover your foot with the bed sheet, and lie on the bed quickly.</p><p>Even though your eyes are closed, you can hear sound of door opening, and friction sound between the wooden floor and mom\'s boots.</p><p>"Gilly, wake up. I know you are awake."</p>' });
                 var choices = new SchrodingersCat.Choices();
                 choices.add(new SchrodingersCat.Choice({ context: '"Hi, Mom. You came back now?"', next: 'asthma-hostile-mom-no', variable: '', value: '' }));
                 choices.add(new SchrodingersCat.Choice({ context: '"What, Anne?"', next: 'asthma-hostile-mom-yes', variable: '', value: '' }));
@@ -16257,7 +16281,7 @@ var SchrodingersCat;
                 passage.set({ choices: choices });
                 that.mPassages.add(passage);
                 // act 1: asthma-grab-rock-no
-                var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-no', isLast: false, context: '<p>Lifting your head again toward the window, you check again the last window in your room is smashed, even if your mom boarded up windows to prevent that. You know why people do this to you. Because of your dad, Dr. Graff... <i>It\'s better to clean this mess before mom comes back.</i> Falling off from the bed, lifting your heels, you walk carefully around the shattered glass. You remember that mom always put a broom and a dustpan on the porch. Squaking sound of the wooden door echoes in the house as you pull the door towards you. Holding the stairway handle rail with both hands, you try to minimize your weight on the wooden stairs, since these stairs makes louder noise than the wooden door. When you\'re about to grabbing the broom on the porch, you hear boots\'s stepping sound on the other side of the entrance.</p>' });
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-no', isLast: false, context: '<p>Lifting your head again toward the window, you check again the last window in your room is smashed, even if your mom boarded up windows to prevent that. You know why people do this to you. Because of your dad, Dr. Graff... <i>It\'s better to clean this mess before mom comes back.</i> Falling off from the bed, lifting your heels, you walk carefully around the shattered glass. You remember that mom always put a broom and a dustpan on the porch. squeaking sound of the wooden door echoes in the house as you pull the door towards you. Holding the stairway handle rail with both hands, you try to minimize your weight on the wooden stairs, since these stairs makes louder noise than the wooden door. When you\'re about to grabbing the broom on the porch, you hear boots\'s stepping sound on the other side of the entrance.</p>' });
                 var choices = new SchrodingersCat.Choices();
                 choices.add(new SchrodingersCat.Choice({ context: 'Grab the broom and hide behind the wall.', next: 'asthma-grab-broom-yes', variable: 'Asthma_Grab_Broom', value: 'true' }));
                 choices.add(new SchrodingersCat.Choice({ context: 'Leave the broom and hide behind the wall.', next: 'asthma-grab-broom-no', variable: 'Asthma_Grab_Broom', value: 'false' }));
@@ -16286,10 +16310,10 @@ var SchrodingersCat;
                 that.mPassages.add(passage);
                 // act 1: asthma-grab-rock-yes
                 if (!Asthma_Out_Bed) {
-                    var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-yes', isLast: false, context: '<p>While falling out from the bed, you look for flip-flops. You\'re pretty sure that you put them right next to the bed before sleeping, but you can\' find it from anwhere around. <i>Oh, well...</i> Lifting with arms and heels, you slowly advance toward the rock. You wish you were a cat; but, apparently, you\'re not, and your muscleless legs don\'t help that much for keeping yourself in balance. <i>YOW!</i> Feeling a sharp and cutting pain in your left heel, you foward one more step to grab the rock, and turn around. The bed is two or thee steps away from you. You hop into the bed holding left food with left hand. Lifting your body using your arms again, you watch the white bed sheet is dying with a red. Holding your left foot with left hand, biting your lower lip with upper teeth, you pull the glass piece out with your right thumb and index finger.</p><p>"Ouch!"</p><p>Suddenly, a loud squaking noise of wooden door reaches you. After a few seconds, noise of someone\'s running up the stairs is running toward you.</p>' });
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-yes', isLast: false, context: '<p>While falling out from the bed, you look for flip-flops. You\'re pretty sure that you put them right next to the bed before sleeping, but you can\' find it from anwhere around. <i>Oh, well...</i> Lifting with arms and heels, you slowly advance toward the rock. You wish you were a cat; but, apparently, you\'re not, and your muscleless legs don\'t help that much for keeping yourself in balance. <i>YOW!</i> Feeling a sharp and cutting pain in your left heel, you foward one more step to grab the rock, and turn around. The bed is two or thee steps away from you. You hop into the bed holding left food with left hand. Lifting your body using your arms again, you watch the white bed sheet is dying with a red. Holding your left foot with left hand, biting your lower lip with upper teeth, you pull the glass piece out with your right thumb and index finger.</p><p>"Ouch!"</p><p>Suddenly, a loud squeaking noise of wooden door reaches you. After a few seconds, noise of someone\'s running up the stairs is running toward you.</p>' });
                 }
                 else {
-                    var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-yes', isLast: false, context: '<p>With lifting with arms and heels, you slowly advance toward the rock. You wish you were a cat; but, apparently, you\'re not, and your muscleless legs don\'t help that much for keeping yourself in balance. <i>YOW!</i> Feeling a sharp and cutting pain in your left heel, you foward one more step to grab the rock, and look foward. The bed is two or thee steps away from you. You hop into the bed holding left food with left hand. Lifting your body using your arms again, you watch the white bed sheet is dying with a red. Holding your left foot with left hand, biting your lower lip with upper teeth, you pull the glass piece out with your right thumb and index finger.</p><p>"Ouch!"</p><p>Suddenly, a loud squaking noise of wooden door reaches you. After a few seconds, noise of someone\'s running up the stairs is running toward you.</p>' });
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-grab-rock-yes', isLast: false, context: '<p>With lifting with arms and heels, you slowly advance toward the rock. You wish you were a cat; but, apparently, you\'re not, and your muscleless legs don\'t help that much for keeping yourself in balance. <i>YOW!</i> Feeling a sharp and cutting pain in your left heel, you foward one more step to grab the rock, and look foward. The bed is two or thee steps away from you. You hop into the bed holding left food with left hand. Lifting your body using your arms again, you watch the white bed sheet is dying with a red. Holding your left foot with left hand, biting your lower lip with upper teeth, you pull the glass piece out with your right thumb and index finger.</p><p>"Ouch!"</p><p>Suddenly, a loud squeaking noise of wooden door reaches you. After a few seconds, noise of someone\'s running up the stairs is running toward you.</p>' });
                 }
                 var choices = new SchrodingersCat.Choices();
                 choices.add(new SchrodingersCat.Choice({ context: 'Wrap your foot with bed sheet, and lie on the bed quickly.', next: 'asthma-cover-wound-yes', variable: 'Asthma_Mother_Know_Wound', value: 'false' }));
@@ -16312,13 +16336,13 @@ var SchrodingersCat;
                 that.mPassages.add(passage);
                 // act 1: asthma-ask-leave-alone
                 if (Asthma_On_First_Floor) {
-                    var passage = new SchrodingersCat.Passage({ name: 'asthma-ask-leave-alone', isLast: true, context: '<p>"Did they do this?"</p><p>Without saying any word, you ascend the stairs, and close the door behind you. <i>They...</i> Not us... The meaning of the word, \'they\', has been changed a lot since D-day. For now, it has almost as same meaning as the word, \'enemies\' for her family. They blame your family because they believe that your dad\'s experiment caused the city got bombed. For this reason, your family is isolated from others in the post-apocalypse world. You stop talking with her since you find out where she keep getting bruise on her face. She doesn\'t want to tell you the truth, but her attitude to protect you makes you mad at her. The truth is... you hate yourself more; you can neither go outside, nor do anything when she is in danger. Pitiful to tell, being mad at her is only thing that you can do. You lift your head not to cry, but it doesn\'t help to control your emotion. Suddenly, everything blurs. You gasp for air, still trying to force, the whimpers down. With every breath the air is less and less filling. You clench your neck as your chest tightens. Your gasps echo, like hicuups.</p><p>"Gilly! Gilly!! Hang on!"</p><p>You hear squaking noise of stairs of her mother running up to you.You barely stand up, and grope for an inhaler with right hand, but everything around you is blurred. Feeling like walking inside of thick fog, you slowly move your steps forward.</p>' });
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-ask-leave-alone', isLast: true, context: '<p>"Did they do this?"</p><p>Without saying any word, you ascend the stairs, and close the door behind you. <i>They...</i> Not us... The meaning of the word, \'they\', has been changed a lot since D-day. For now, it has almost as same meaning as the word, \'enemies\' for her family. They blame your family because they believe that your dad\'s experiment caused the city got bombed. For this reason, your family is isolated from others in the post-apocalypse world. You stop talking with her since you find out where she keep getting bruise on her face. She doesn\'t want to tell you the truth, but her attitude to protect you makes you mad at her. The truth is... you hate yourself more; you can neither go outside, nor do anything when she is in danger. Pitiful to tell, being mad at her is only thing that you can do. You lift your head not to cry, but it doesn\'t help to control your emotion. Suddenly, everything blurs. You gasp for air, still trying to force, the whimpers down. With every breath the air is less and less filling. You clench your neck as your chest tightens. Your gasps echo, like hicuups.</p><p>"Gilly! Gilly!! Hang on!"</p><p>You hear squeaking noise of stairs of her mother running up to you.You barely stand up, and grope for an inhaler with right hand, but everything around you is blurred. Feeling like walking inside of thick fog, you slowly move your steps forward.</p>' });
                     var choices = new SchrodingersCat.Choices();
                     passage.set({ choices: choices });
                     that.mPassages.add(passage);
                 }
                 else {
-                    var passage = new SchrodingersCat.Passage({ name: 'asthma-ask-leave-alone', isLast: true, context: '<p>"Did they do this? What\'s wrong with you Gilly? You haven\'t talked with me during last three days."</p><p>Without saying any word, you point out to the door with your left index finger.</p><p>With sighing, she walk out the room, and close the door behind her. After the squaking noise of door stops, you relax your eyes. <i>They...</i> Not us... The meaning of the word, \'they\', has been changed a lot since D-day. For now, it has almost as same meaning as the word, \'enemies\' for her family. They blame your family because they believe that your dad\'s experiment caused the city got bombed. For this reason, your family is isolated from others in the post-apocalypse world. You stop talking with her since you find out where she keep getting bruise on her face. She doesn\'t want to tell you the truth, but her attitude to protect you makes you mad at her. The truth is... you hate yourself more; you can neither go outside, nor do anything when she is in danger. Pitiful to tell, being mad at her is only thing that you can do. You lift your head not to cry, but it doesn\'t help to control your emotion. Suddenly, everything blurs. You gasp for air, still trying to force, the whimpers down. With every breath the air is less and less filling. You clench your neck as your chest tightens. Your gasps echo, like hicuups.</p><p>"Gilly! Gilly!! Hang on!"</p><p>You hear squaking noise of stairs of her mother running up to you.You barely stand up, and grope for an inhaler with right hand, but everything around you is blurred. Feeling like walking inside of thick fog, you slowly move your steps forward.</p>' });
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-ask-leave-alone', isLast: true, context: '<p>"Did they do this? What\'s wrong with you Gilly? You haven\'t talked with me during last three days."</p><p>Without saying any word, you point out to the door with your left index finger.</p><p>With sighing, she walk out the room, and close the door behind her. After the squeaking noise of door stops, you relax your eyes. <i>They...</i> Not us... The meaning of the word, \'they\', has been changed a lot since D-day. For now, it has almost as same meaning as the word, \'enemies\' for her family. They blame your family because they believe that your dad\'s experiment caused the city got bombed. For this reason, your family is isolated from others in the post-apocalypse world. You stop talking with her since you find out where she keep getting bruise on her face. She doesn\'t want to tell you the truth, but her attitude to protect you makes you mad at her. The truth is... you hate yourself more; you can neither go outside, nor do anything when she is in danger. Pitiful to tell, being mad at her is only thing that you can do. You lift your head not to cry, but it doesn\'t help to control your emotion. Suddenly, everything blurs. You gasp for air, still trying to force, the whimpers down. With every breath the air is less and less filling. You clench your neck as your chest tightens. Your gasps echo, like hicuups.</p><p>"Gilly! Gilly!! Hang on!"</p><p>You hear squeaking noise of stairs of her mother running up to you.You barely stand up, and grope for an inhaler with right hand, but everything around you is blurred. Feeling like walking inside of thick fog, you slowly move your steps forward.</p>' });
                     var choices = new SchrodingersCat.Choices();
                     passage.set({ choices: choices });
                     that.mPassages.add(passage);
@@ -16346,7 +16370,6 @@ var SchrodingersCat;
                 }
                 var choices = new SchrodingersCat.Choices();
                 choices.add(new SchrodingersCat.Choice({ context: '"Give me that."', next: 'asthma-paper-grab', variable: '', value: '' }));
-                choices.add(new SchrodingersCat.Choice({ context: '"Are you alright, mom?"', next: '', variable: '', value: '' }));
                 passage.set({ choices: choices });
                 that.mPassages.add(passage);
                 // act 1: asthma-paper-grab
@@ -16357,7 +16380,7 @@ var SchrodingersCat;
                 passage.set({ choices: choices });
                 that.mPassages.add(passage);
                 // act 1: asthma-bruise-check
-                var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-check', isLast: false, context: '<p>You move her front hair aside using your index finger. The wound is far severe than you thought. In surprise, she grabs your hand in haste.</p><p>"Gilly, what\'s the blood on your hand?"</p>' });
+                var passage = new SchrodingersCat.Passage({ name: 'asthma-bruise-check', isLast: false, context: '<p>You brush her front hair aside using your index finger. The wound is far severe than you thought. In surprise, she grabs your hand in haste.</p><p>"Gilly, what\'s the blood on your hand?"</p>' });
                 var choices = new SchrodingersCat.Choices();
                 choices.add(new SchrodingersCat.Choice({ context: '"It\'s nothing. Leave me alone."', next: 'asthma-ask-leave-alone', variable: '', value: '' }));
                 choices.add(new SchrodingersCat.Choice({ context: '"Mom. Don\'t change the subject. I need to know what happened."', next: 'asthma-bruise-ask-truth', variable: '', value: '' }));
@@ -16399,13 +16422,13 @@ var SchrodingersCat;
                 }
                 // act 1: asthma-mad-at-mother
                 if (Asthma_On_First_Floor) {
-                    var passage = new SchrodingersCat.Passage({ name: 'asthma-mad-at-mother', isLast: true, context: '<p>You run up the stairs with intentionally making a lot of squaking noise, and slam the door. You know how hurtful your word to her. You haven\'t eaten during two days, so there\'s no chance for eating dinner today. She was probably harrased by peole while trying to get food for you. Even though knowing the fact, you can\'t help but yelling at her. The truth is... you hate yourself more; you can neither go outside, nor do anything when she is in danger. Pitiful to tell, being mad at her is only thing that you can do. You lift your head not to cry, but it doesn\'t help to control your emotion. Suddenly, you feel something is squeezing your throat. <i>CAN\'T BREATHE!</i> Kneeling down on the floor, you grasp the neck with hands desperately.</p><p>"Gilly! Gilly!! Hang on!"</p><p>You hear squaking noise of stairs of her mother running up to you.You barely stand up, and grope for an inhaler with right hand, but everything around you is blurred. Feeling like walking inside of thick fog, you slowly move your steps forward.</p>' });
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-mad-at-mother', isLast: true, context: '<p>You run up the stairs with intentionally making a lot of squeaking noise, and slam the door. You know how hurtful your word to her. You haven\'t eaten during two days, so there\'s no chance for eating dinner today. She was probably harrased by peole while trying to get food for you. Even though knowing the fact, you can\'t help but yelling at her. The truth is... you hate yourself more; you can neither go outside, nor do anything when she is in danger. Pitiful to tell, being mad at her is only thing that you can do. You lift your head not to cry, but it doesn\'t help to control your emotion. Suddenly, you feel something is squeezing your throat. <i>CAN\'T BREATHE!</i> Kneeling down on the floor, you grasp the neck with hands desperately.</p><p>"Gilly! Gilly!! Hang on!"</p><p>You hear squeaking noise of stairs of her mother running up to you.You barely stand up, and grope for an inhaler with right hand, but everything around you is blurred. Feeling like walking inside of thick fog, you slowly move your steps forward.</p>' });
                     var choices = new SchrodingersCat.Choices();
                     passage.set({ choices: choices });
                     that.mPassages.add(passage);
                 }
                 else {
-                    var passage = new SchrodingersCat.Passage({ name: 'asthma-mad-at-mother', isLast: true, context: '<p>With staring at her eyes out, you point the door with your index finger. She put the broom and dustpan next of the door, and closes the door behind her. You know how hurtful your word to her. You haven\'t eaten during two days, so there\'s no chance for eating dinner today. She was probably harrased by peole while trying to get food for you. Even though knowing the fact, you can\'t help but yelling at her. The truth is... you hate yourself more; you can neither go outside, nor do anything when she is in danger. Pitiful to tell, being mad at her is only thing that you can do. You lift your head not to cry, but it doesn\'t help to control your emotion. Suddenly, everything blurs. You gasp for air, still trying to force, the whimpers down. With every breath the air is less and less filling.  You clench your neck as your chest tightens. Your gasps echo, like hicuups.</p><p>"Gilly! Gilly!! Hang on!"</p><p>You hear squaking noise of stairs of her mother running up to you.You barely stand up, and grope for an inhaler with right hand, but everything around you is blurred. Feeling like walking inside of thick fog, you slowly move your steps forward.</p>' });
+                    var passage = new SchrodingersCat.Passage({ name: 'asthma-mad-at-mother', isLast: true, context: '<p>With staring at her eyes out, you point the door with your index finger. She put the broom and dustpan next of the door, and closes the door behind her. You know how hurtful your word to her. You haven\'t eaten during two days, so there\'s no chance for eating dinner today. She was probably harrased by peole while trying to get food for you. Even though knowing the fact, you can\'t help but yelling at her. The truth is... you hate yourself more; you can neither go outside, nor do anything when she is in danger. Pitiful to tell, being mad at her is only thing that you can do. You lift your head not to cry, but it doesn\'t help to control your emotion. Suddenly, everything blurs. You gasp for air, still trying to force, the whimpers down. With every breath the air is less and less filling. You clench your neck as your chest tightens. Your gasps echo, like hicuups.</p><p>"Gilly! Gilly!! Hang on!"</p><p>You hear squeaking noise of stairs of her mother running up to you.You barely stand up, and grope for an inhaler with right hand, but everything around you is blurred. Feeling like walking inside of thick fog, you slowly move your steps forward.</p>' });
                     var choices = new SchrodingersCat.Choices();
                     passage.set({ choices: choices });
                     that.mPassages.add(passage);
@@ -16434,16 +16457,417 @@ var SchrodingersCat;
             }
             else if (cnum == 2) {
                 // act 2: cat-begin
-                var passage = new SchrodingersCat.Passage({ name: 'cat-begin', isLast: false, first: 'Y', context: '<p>ou keep walking and walking. Still everything around you is blurred. The chest pain seems gone, but dust in the air still trouble you to breathe. Covering your mouth with your left hand, you try to figure out where you are.</p>' });
+                var passage = new SchrodingersCat.Passage({ name: 'cat-begin', isLast: false, first: 'Y', context: '<p>ou keep walking, everything around you is blurred. The pain in your chest is gone, but the dust still makes it difficult to breathe. Covering your mouth with your left hand, you try to figure out where you are. This is definitely not in your room. Straining your eyes, you try to peer through the dust to catch a glimpse of anything; Something\'s approaching you. Though blurred, its outline is not a human; it has four legs, and a tail. As it comes closer to you, you notice it\'s a... </p>' });
                 var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'A giant cat.', next: 'cat-meet-cat', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-meet-cat
+                if (Asthma_Shout_To_Mother) {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-meet-cat', isLast: false, context: '<p>The giant cat stops right in front of you, and lowers its head down toward you. The distance between the cat and your face is only few inches. Suddenly, it raises its left front foot, and stabs its neck with its claw. Blood spurts from his neck, chocking off your airway. You try to shout to make it stop, but your voice fails. <i>One last chance.</i> Inhailing as deep as you can, you shout at the top of your lungs.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"AHHhhaaa~~~"', next: 'cat-wake-up-shout', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-meet-cat', isLast: false, context: '<p>The giant cat stops right in front of you, and lowers its head down toward you. The distance between the cat and your face is only few inches. Suddenly, it raises its left front foot, and stabs its neck with its claw. Blood spurts from his neck, chocking off your airway. While being suffocated, you try to call your mother for help, but your voice fails. <i>One last chance.</i> Inhailing as deep as you can, you shout at the top of your lungs.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"AHHhhaaa~~~"', next: 'cat-wake-up-shout', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                // act 2: cat-wake-up-shout
+                if (!Asthma_On_First_Floor) {
+                    if (Asthma_Shout_To_Mother) {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-wake-up-shout', isLast: false, context: '<p>You wake up screaming. You notice a bandage on your left foot. <i>Damn, Anne.</i> Unwrapping the bandage vigorously, you throw it on the ground. You roll out of the bed, and limp to the window. You look across the street, but there\'s no sign of activity. The cat is usually sitting on the neighbor\'s window across the street, staring at you whenever you look outside waiting for your dad come home.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '<i>Kitty, Kitty. Are you there? Come out, please.</i>', next: 'cat-keep-wait-cat', variable: '', value: '' }));
+                        choices.add(new SchrodingersCat.Choice({ context: '<i>I\'m gonna find it.</i>', next: 'cat-find-out-cat', variable: 'Cat_Go_Outside_Find_Cat', value: 'true' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                    else {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-wake-up-shout', isLast: false, context: '<p>You wake up screaming. You notice a bandage on your left foot. <i>Mom...</i> Without thanking her, you roll out of the bed, and limp to the window. You look across the street, but there\'s no sign of activity. The cat is usually sitting on the neighbor\'s window across the street, staring at you whenever you look outside waiting for your dad come home.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '<i>Kitty, Kitty. Are you there? Come out, please.</i>', next: 'cat-keep-wait-cat', variable: '', value: '' }));
+                        choices.add(new SchrodingersCat.Choice({ context: '<i>I\'m gonna find it.</i>', next: 'cat-find-out-cat', variable: 'Cat_Go_Outside_Find_Cat', value: 'true' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                }
+                else {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-wake-up-shout', isLast: false, context: '<p>You wake up screaming. Rolling out of the bed, and putting on your flip-flops, you walk to the window. You look across the street, but there\'s no sign of activity. The cat is usually sitting on the neighbor\'s window across the street, staring at you whenever you look outside waiting for your dad come home.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '<i>Kitty, Kitty. Are you there? Come out, please.</i>', next: 'cat-keep-wait-cat', variable: '', value: '' }));
+                    choices.add(new SchrodingersCat.Choice({ context: '<i>I\'m gonna find it.</i>', next: 'cat-find-out-cat', variable: 'Cat_Go_Outside_Find_Cat', value: 'true' }));
+                    passage.set({ choices: choices });
+                }
+                // act 2: cat-keep-wait-cat
+                var passage = new SchrodingersCat.Passage({ name: 'cat-keep-wait-cat', isLast: false, context: '<p><i>What if it died?</i> All your doubts and fears entangle you. It has been three days since the cat disappeared. You shake your head, clearing out your mind.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '<i>But, what if?</i>', next: 'cat-think-cat-death', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-think-cat-death
+                var passage = new SchrodingersCat.Passage({ name: 'cat-think-cat-death', isLast: false, context: '<p>The cat will come back, and so will dad. He will come back, tell the truth about his innocence, and slap those who harrased mom 10 fold! If a cat can survive in this chaos, so can dad. </p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '<i>I need to go out and find it.</i>', next: 'cat-find-out-cat', variable: 'Cat_Go_Outside_Find_Cat', value: 'true' }));
+                choices.add(new SchrodingersCat.Choice({ context: '<i>It will be back; I know it.</i>', next: 'cat-wait-window', variable: 'Cat_Go_Outside_Find_Cat', value: 'false' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-find-out-cat
+                if (!Asthma_On_First_Floor) {
+                    if (!Asthma_Shout_To_Mother) {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-find-out-cat', isLast: false, context: '<p>You walk out of your room, but your left foot is swollen and still painful. You find flip-flops under your bed and put them on. <i>Much better.</i> You put your left hand on the door handle, and slowly open it. The squeaking echos through the house. After a few steps, you call your mom.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '"Mom? Are you there?"', next: 'cat-call-mother', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                    else {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-find-out-cat', isLast: false, context: '<p>You walk out of your room, but your left foot is swollen and still painful. You find flip-flops under your bed and put them on. <i>Much better.</i> You put your left hand on the door handle, and slowly open it. The squeaking echos through the house. Mom must not be home or she would have come out already.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '"It\'s better to check her room."', next: 'cat-check-mother-yes', variable: '', value: '' }));
+                        choices.add(new SchrodingersCat.Choice({ context: '"Whatever..."', next: 'cat-go-downstairs', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                }
+                else {
+                    if (!Asthma_Shout_To_Mother) {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-find-out-cat', isLast: false, context: '<p>You walk out of your room. You put your left hand on the door handle, and slowly open it. The squeaking echos through the house. After a few steps, you call your mom.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '"Mom? Are you there?"', next: 'cat-call-mother', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                    else {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-find-out-cat', isLast: false, context: '<p>You walk out of your room. You put your left hand on the door handle, and slowly open it. The squeaking echos through the house. Mom must not be home or she would have come out already.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '"It\'s better to check her room."', next: 'cat-check-mother-yes', variable: '', value: '' }));
+                        choices.add(new SchrodingersCat.Choice({ context: '"Whatever..."', next: 'cat-go-downstairs', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                }
+                // act 2: cat-check-mother-yes
+                var passage = new SchrodingersCat.Passage({ name: 'cat-check-mother-yes', isLast: false, context: '<p>Mom\'s room downstairs to the right. After walking down, you stand in front of her door. You open the door carefully, slowly turning the doorknob. She is not here.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Enter her room.', next: 'cat-enter-mom-room', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'Go to porch.', next: 'cat-go-porch', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-enter-mom-room
+                var passage = new SchrodingersCat.Passage({ name: 'cat-enter-mom-room', isLast: false, context: '<p>You step into her room without fully opening the door. You open her wardrobe and confirm her brown coat is not there. While closing the door of the wardrobe, you find a drawer that you\'ve never seen before.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Pull out the drawer', next: 'cat-try-open-lock', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-try-open-lock
+                var passage = new SchrodingersCat.Passage({ name: 'cat-try-open-lock', isLast: false, context: '<p>The rattling noise tells you that you need other way to open it. You have a feeling that she hides her secret inside of this drawer. But for now, you need to go outside and come back before she does.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Leave the room, and go to porch.', next: 'cat-go-porch', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-call-mother
+                var passage = new SchrodingersCat.Passage({ name: 'cat-call-mother', isLast: false, context: '<p>Leaning on the rail, you try to listen for any sound from downstairs. It\'s quiet. Mom must not be home or she would have come out already.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Go downstairs.', next: 'cat-go-downstairs', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'Go back to your room.', next: 'cat-go-back-room', variable: 'Cat_Go_Outside_With_Inhaler', value: 'true' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-go-back-room
+                var passage = new SchrodingersCat.Passage({ name: 'cat-go-back-room', isLast: false, context: '<p>You almost forgot to take an inhaler with you. Grabbing one from the drawer of your nightstand, you leave the room.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Go downstairs.', next: 'cat-go-downstairs', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-go-downstairs
+                if (!Asthma_On_First_Floor) {
+                    if (Asthma_Grab_Broom || Asthma_Broom_Second_Floor) {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-go-downstairs', isLast: false, context: '<p>It\'s hard for you to balance well with an injured foot, and the noise from the wooden stairs is louder than before. After descending the stairs, you turn to walk to the porch. Standng in front of the door, you take a deep breath, turning the handle with your weight, and push yourself forward.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: 'STOMP!', next: 'cat-go-outside', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                    else {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-go-downstairs', isLast: false, context: '<p>It\'s hard for you to balance well with an injured foot, and the noise from the wooden stairs is louder than before. After descending the stairs, you turn to walk to the porch. Taking a deep breath, you stand in front of the door, hesitating for a second, and look around-- a broom stick is leaning on the wall.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '"I might need that."', next: 'cat-obtain-broom', variable: 'Cat_Go_Outside_With_Broom', value: 'true' }));
+                        choices.add(new SchrodingersCat.Choice({ context: 'It\'s just a small cat.', next: 'cat-go-outside', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                }
+                else {
+                    if (Asthma_Grab_Broom || Asthma_Broom_Second_Floor) {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-go-downstairs', isLast: false, context: '<p>After descending the stairs, you turn to walk to the porch. Standng in front of the door, you take a deep breath, turning the handle with your weight, and push yourself forward.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: 'THUD!', next: 'cat-go-outside', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                    else {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-go-downstairs', isLast: false, context: '<p>After descending the stairs, you turn to walk to the porch. Taking a deep breath, you stand in front of the door, hesitating for a second, and look around-- a broom stick is leaning on the wall.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '"I might need that."', next: 'cat-obtain-broom', variable: 'Cat_Go_Outside_With_Broom', value: 'true' }));
+                        choices.add(new SchrodingersCat.Choice({ context: 'It\'s just a small cat.', next: 'cat-go-outside', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                }
+                // act 2: cat-go-porch
+                if (!Asthma_On_First_Floor) {
+                    if (Asthma_Grab_Broom || Asthma_Broom_Second_Floor) {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-go-porch', isLast: false, context: '<p>Standing in front of the entrance, you hesitate a little bit. Your foot still hurts, even though wearing comfortable shoes. Taking a deep breath, you take a deep breath, turning the handle with your weight, and push yourself forward.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: 'STOMP!', next: 'cat-go-outside', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                    else {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-go-porch', isLast: false, context: '<p>Standing in front of the entrance, you hesitate a little bit. Your foot still hurts, even though wearing comfortable shoes. Taking a deep breath, you stand in front of the door, hesitating for a second, and look around-- a broom stick is leaning on the wall.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '"I might need that."', next: 'cat-obtain-broom', variable: 'Cat_Go_Outside_With_Broom', value: 'true' }));
+                        choices.add(new SchrodingersCat.Choice({ context: 'It\'s just a small cat.', next: 'cat-go-outside', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                }
+                else {
+                    if (Asthma_Grab_Broom || Asthma_Broom_Second_Floor) {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-go-porch', isLast: false, context: '<p>Standing in front of the entrance, you hesitate a little bit. You\'re worried about your asthma. Taking a deep breath, you take a deep breath, turning the handle with your weight, and push yourself forward.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: 'STOMP!', next: 'cat-go-outside', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                    else {
+                        var passage = new SchrodingersCat.Passage({ name: 'cat-go-porch', isLast: false, context: '<p>Standing in front of the entrance, you hesitate a little bit. You\'re worried about your asthma. Taking a deep breath, you stand in front of the door, hesitating for a second, and look around-- a broom stick is leaning on the wall.</p>' });
+                        var choices = new SchrodingersCat.Choices();
+                        choices.add(new SchrodingersCat.Choice({ context: '"I might need that."', next: 'cat-obtain-broom', variable: 'Cat_Go_Outside_With_Broom', value: 'true' }));
+                        choices.add(new SchrodingersCat.Choice({ context: 'It\'s just a small cat.', next: 'cat-go-outside', variable: '', value: '' }));
+                        passage.set({ choices: choices });
+                        that.mPassages.add(passage);
+                    }
+                }
+                // act 2: cat-obtain-broom
+                var passage = new SchrodingersCat.Passage({ name: 'cat-obtain-broom', isLast: false, context: '<p>It\'s a 3 feet long wooden broom stick. The end of stick is split, and sharply pointed. Grasping the handle firmly with your left hand, you push yourself foward, opening the door with your right hand.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'STOMP!', next: 'cat-go-outside', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-go-outside
+                if (Cat_Go_Outside_With_Inhaler) {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-go-outside', isLast: false, context: '<p>You leave the door for the first time in 6 months. It\'s one small step for others, one giant leap for you. Covering your mouth with right hand, you advance forward across the street. The dust is thicker than you thought. After a few seconds, everything around you fades into dust, and you get lost. It\'s hard to breathe. Taking out your inhaler from your jacket, you spout gas into your mouth. Nothing happens. You shake the inhaler and try again, but nothing comes out.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"Damn!"', next: 'cat-outside-pass-out', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-go-outside', isLast: false, context: '<p>You leave the door for the first time in 6 months. It\'s one small step for others, one giant leap for you. Covering your mouth with right hand, you advance forward across the street. The dust is thicker than you thought. After a few seconds, everything around you fades into dust, and you get lost. It\'s hard to breathe. You search through your pocket, but you realize you forgot to bring an inhaler.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"Damn!"', next: 'cat-outside-pass-out', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                // act 2: cat-outside-pass-out
+                var passage = new SchrodingersCat.Passage({ name: 'cat-outside-pass-out', isLast: false, context: '<p>You hit the ground in agony, your head resting on the cement. You struggle to stay awake. Beathing heavily, you notice something rushing toward you. It\'s too blurry to recognize it. It stops right in front of you, and kneels down. After a second, you feel fresh air in your lungs. As you regain your consciousness, you recognize what\'s in front of you.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom?"', next: 'cat-save-find-mom', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"Dad?"', next: 'cat-save-find-dad', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-save-find-mom
+                var passage = new SchrodingersCat.Passage({ name: 'cat-save-find-mom', isLast: false, context: '<p>"Gilly, Gilly! Are you ok? Can you hear me?"</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"I thought dad saved me."', next: 'cat-back-home-mom-sobbing', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-save-find-dad
+                var passage = new SchrodingersCat.Passage({ name: 'cat-save-find-dad', isLast: false, context: '<p>"Gilly, Gilly! Are you ok? Can you hear me?"</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"I saw dad, mom. He was here. He saved me."', next: 'cat-back-home-mom-sobbing', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-back-home-mom-sobbing
+                var passage = new SchrodingersCat.Passage({ name: 'cat-back-home-mom-sobbing', isLast: false, context: '<p>"Oh, Gilly. You must have seen his soul."</p><p>She pauses for a moment.</p><p>"Gilly, I don\'t think I should show you this, but since you don\'t listen and go outside, I think it\'s better to show you."</p><p>She takes out a letter from her pocket. It\'s partially stained with dried blood, but you can clearly see the name on the cover.</p><p><i>To Gilly,</i></p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Snatch the letter from her.', next: 'cat-read-letter', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-read-letter
+                var passage = new SchrodingersCat.Passage({ name: 'cat-read-letter', isLast: false, context: '<p>It\'s addressed to you. With doubts and curiosity, you open it. Your eyes dart through the sentences. <i>Dad.</i> In the letter, he explain how government manipulated his research, how much he loves you and mom, and promises to come back to you after it\'s resolved.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom! Dad is still alive!"', next: 'cat-tell-dad-alive', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-tell-dad-alive
+                var passage = new SchrodingersCat.Passage({ name: 'cat-tell-dad-alive', isLast: false, context: '<p>"Gilly, can\'t you see the blood on the letter? If he is alive, why did he just slide the letter under the door and leave without seeing us? He\'s gone!"</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"I don\'t believe you. He is not dead! Let me go outside to find the cat! I need to find it!"', next: 'cat-let-me-go', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, you can\'t lose hope! He\'s coming back."', next: 'cat-let-have-hope', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-let-have-hope
+                var passage = new SchrodingersCat.Passage({ name: 'cat-let-have-hope', isLast: false, context: '<p>"It\'s been 6 months, and he\'s still not back. Gilly, I don\'t want him to be dead, but..."</p><p>You lift your eyes and watch her face. Her tears run over her nose, purplish and bruised.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, did they do this to you!? I told you not to go to that place!"', next: 'cat-ask-mother-bruise', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-let-me-go
+                var passage = new SchrodingersCat.Passage({ name: 'cat-let-me-go', isLast: false, context: '<p>You put your flip-flops back on your feet, and stand up from the couch. She grabs your arm.</p><p>SMACK!</p><p>You can\'t even feel your cheek. She\'s never slapped you before.</p><p>"Wake up!"</p><p>You lift your eyes and watch her face. f</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, did they do this to you!? I told you not to go to that place!"', next: 'cat-ask-mother-bruise', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-ask-mother-bruise
+                var passage = new SchrodingersCat.Passage({ name: 'cat-ask-mother-bruise', isLast: false, context: '<p>"It\'s not like that, Gilly."</p><p>She turns her face away from you.</p><p>"Please, go back to your room. Let\'s talk later. Here, I got two more inhalers."</p><p>She places them in your right hand and closes it. <i>Mom...</i> You go upstairs, back to your room, and close the door. Your hands are trembling.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'You lift your left arm, and strike the door with your fist.', next: 'cat-slam-door', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'You lift your right arm, and throw the inhalers out the window.', next: 'cat-throw-inhaler', variable: 'Cat_Throw_Inhaler_Window', value: 'true' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-slam-door
+                var passage = new SchrodingersCat.Passage({ name: 'cat-slam-door', isLast: true, context: '<p>SLAM!</p><p>You bite your lower lip. You feel so sorry for your mother. You can\'t just let her keep getting hurt for food. You can\'t go outside, but how else does she expect you to help!? You lie down and close your eyes waiting the night to come.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-throw-inhaler
+                var passage = new SchrodingersCat.Passage({ name: 'cat-throw-inhaler', isLast: true, context: '<p>Both inhalers fly through the window. She doesn\'t know how much you hate seeing her bruised face. She keeps risking her life for food! You slam your head on your pillows and close your eyes to try calm down.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-wait-window
+                var passage = new SchrodingersCat.Passage({ name: 'cat-wait-window', isLast: false, context: '<p>Leaning on the window frame, you keep watching across the street. Suddenly, you see an unknown figure approaching your house. <i>Mom?</i> The color of their hair, and their outfit tells you that it\'s not mom. <i>Dad?</i></p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Dad!"', next: 'cat-think-as-dad', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-think-as-dad
+                if (!Asthma_On_First_Floor) {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-think-as-dad', isLast: false, context: '<p>Even though your left heel still hurts, you run down stairs. You put your eyes on the peep hole of the door to confirm. It\'s a man... but not dad. You take your eyes from the door, and cover your mouth quickly. <i>He might be one of them.</i> The sound stops right in front of the entrance.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: 'KNOCK, KOCK!', next: 'cat-man-knock', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-think-as-dad', isLast: false, context: '<p>Overwhelmed with joy, you run down stairs. You put your eyes on the peep hole of the door to confirm. It\'s a man... but not dad. You take your eyes from the door, and cover your mouth quickly. <i>He might be one of them.</i> The sound stops right in front of the entrance.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: 'KNOCK, KOCK!', next: 'cat-man-knock', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                // act 2: cat-man-knock
+                if (Asthma_Grab_Broom || Asthma_Broom_Second_Floor) {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-man-knock', isLast: false, context: '<p>Filled with fear, you look around to find a weapon. <i>Damn, the broom stick was here before.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: 'Stay silent, pretending no one is here.', next: 'cat-slide-letter', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-man-knock', isLast: false, context: '<p>Filled with fear, you look around to find a weapon. A broom stick leans on the wall. You take off your flip-flops to not make any noise, and pick up the brrom stick carefully.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: 'Point the broom stick toward the door, and wait.', next: 'cat-slide-letter', variable: 'Cat_Believe_Dad_Died', value: 'true' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                // act 2: cat-slide-letter
+                var passage = new SchrodingersCat.Passage({ name: 'cat-slide-letter', isLast: false, context: '<p>KNOCK, KNOCK, KNOCK!</p><p>Holding your breath, you stay still. Wondering how much time has passed, suddenly, a letter slides under the door. The letter is partially stained with dried blood, but you can clearly see the name on the cover.</p><p><i>To Gilly,</i></p><p>It\'s addressed to you. You sit down on the porch and, open it without hesitation. It\'s from dad. In the letter, he describes how much he loves you, and asks you to take care of mom if he can\'t make it. That figure was not your dad, but he was holding your dad\'s letter. It could mean...</p><p>Another footstep sound. This one is ligher than previous one. The sound of key turns.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'SQUEAK!', next: 'cat-mom-back', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-mom-back
+                if (Asthma_Shout_To_Mother) {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-mom-back', isLast: false, context: '<p>You lift your head and look up. It\'s not clear because of the tears in your eyes, but you notice it\'s mom.</p><p>"Gilly, Gilly! Are you ok?"</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"It\'s nothing."', next: 'cat-pretend-nothing', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else {
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-mom-back', isLast: false, context: '<p>You lift your head and look up. It\'s not clear because of the tears in your eyes, but you notice it\'s mom.</p><p>"Gilly, Gilly! Are you ok?"</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"Mom. I think dad is dead."', next: 'cat-cry-in-bosom', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                // act 2: cat-pretend-nothing
+                var passage = new SchrodingersCat.Passage({ name: 'cat-pretend-nothing', isLast: false, context: '<p>You hide the letter and wipe your face. You don\'t want to make her lose hope about dad. You know she\'s stuborn to stay in this dark city to wait for dad to come back. Wiping your face again, you notice another bruise on her nose. Wihtout saying anything, you turn around and walk up to stairs. Mom\'s voice echoes through the house calling you, but you ignore her and close the door behind of you.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'You lift your left arm, and strike the door with your fist.', next: 'cat-slam-door', variable: '', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'You lift your right arm, and throw inhalers out the window.', next: 'cat-throw-inhaler', variable: 'Cat_Throw_Inhaler_Window', value: 'true' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-cry-in-bosom
+                var passage = new SchrodingersCat.Passage({ name: 'cat-cry-in-bosom', isLast: false, context: '<p>You pull her coat into you, and sob in her bosom. She pats you with one hand, and reads the letter with the other hand.</p><p>"Gilly, don\'t worry. Your dad will come back. He said he loves us. He won\'t abandon us."</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Really? Do you really think so?"', next: 'cat-ask-again', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 2: cat-ask-again
+                var passage = new SchrodingersCat.Passage({ name: 'cat-ask-again', isLast: false, context: '<p>"He will."</p><p>Her tears run over her nose, purplish and bruised. Wiping her tears with your sleeve, you ask to her.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Mom, did they do this to you, again?"', next: 'cat-ask-mother-bruise', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+            }
+            else if (cnum == 3) {
+                var passage = new SchrodingersCat.Passage({ name: 'love-begin', isLast: false, context: '<p>When you open your eyes, it\'s already dark outside. Only small amount of moon light comes through gaps of boarded wooden panels.</i> Heavy air in the room occasionally vibrate from far siren noise. You wake up from the bed, and walk to the window. The air in this city is already cold in early November; the cold air comes through the gap of the broken window.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Open the window fully.', next: 'love-window', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 3: love-window
+                if (!Cat_Throw_Inhaler_Window) {
+                    var passage = new SchrodingersCat.Passage({ name: 'love-window', isLast: false, context: '<p>There are more people on the street in the night than in the morning. Most of them are scavangers, or traders. You\'re also waiting one of them. There are not many scavangers or traders around your housde since you live on outskirts of the city, but still you have seen at least one every other night. At last, one trader is passing by your house.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: '"Hey! Hello!"', next: 'love-call-trader', variable: '', value: '' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else {
+                }
+                // act 3: love-call-trader
+                if (Asthma_Broom_Second_Floor && !Cat_Go_Outside_With_Broom) {
+                    var passage = new SchrodingersCat.Passage({ name: 'love-call-trader', isLast: false, context: '<p>Unfortunately, he doesn\'t hear your hoarse voice. You can say louder, but you don\'t want to wake mom up. You find some objects can be useful.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: 'Throw rock toward him.', next: 'love-throw-rock', variable: '', value: '' }));
+                    choices.add(new SchrodingersCat.Choice({ context: 'Throw broom toward him.', next: 'love-throw-broom', variable: 'Love_Lost_Broom', value: 'true' }));
+                    choices.add(new SchrodingersCat.Choice({ context: 'Throw a flip-flop toward him.', next: 'love-throw-shoe', variable: 'Love_Lost_Shoe', value: 'true' }));
+                    passage.set({ choices: choices });
+                    that.mPassages.add(passage);
+                }
+                else {
+                    var passage = new SchrodingersCat.Passage({ name: 'love-call-trader', isLast: false, context: '<p>Unfortunately, he doesn\'t hear your hoarse voice. You can say louder, but you don\'t want to wake mom up. You find some objects can be useful.</p>' });
+                    var choices = new SchrodingersCat.Choices();
+                    choices.add(new SchrodingersCat.Choice({ context: 'Throw rock toward him.', next: 'love-throw-rock', variable: '', value: '' }));
+                    choices.add(new SchrodingersCat.Choice({ context: 'Throw a flip-flop toward him.', next: 'love-throw-shoe', variable: 'Love_Lost_Shoe', value: 'true' }));
+                    passage.set({ choices: choices });
+                }
+                // act 3: love-throw-rock
+                var passage = new SchrodingersCat.Passage({ name: 'love-throw-rock', isLast: false, context: '<p>The rock is landed right in front of him. He is looking for the origin direction of the rock. You call him again.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: '"Hey, come here. I want to trade."', next: 'love-trader-meet', variable: '', value: '' }));
                 choices.add(new SchrodingersCat.Choice({ context: '', next: '', variable: '', value: '' }));
-                choices.add(new SchrodingersCat.Choice({ context: '', next: '', variable: '', value: '' }));
+                passage.set({ choices: choices });
+                that.mPassages.add(passage);
+                // act 3: love-trader-meet
+                var passage = new SchrodingersCat.Passage({ name: 'love-trader-meet', isLast: false, context: '<p>He comes closer, and points out the direction of the entrance with his finger. You give a nod, walk toward the door. Opening the door is hard part. You slowly, very slowly open the door to minimize the noise. Opening only one third of the door, you squeeze yourself into the space. After that, you put your right foot on the stair rails, and slide down without making any noise.</p>' });
+                var choices = new SchrodingersCat.Choices();
+                choices.add(new SchrodingersCat.Choice({ context: 'Go to porch.', next: 'love-trade-porch', variable: '', value: '' }));
                 passage.set({ choices: choices });
                 that.mPassages.add(passage);
             }
             /*
             
-            // act 2:
+            // act 3:
             var passage = new Passage({ name: '', isLast: false, context: '<p></p>' });
             var choices = new Choices();
             choices.add(new Choice({ context: '', next: '', variable: '', value: '' }));
@@ -16657,6 +17081,12 @@ var SchrodingersCat;
             }
             if (response.name.indexOf("Asthma") == 0) {
                 response.act = 1;
+            }
+            else if (response.name.indexOf("Cat") == 0) {
+                response.act = 2;
+            }
+            else if (response.name.indexOf("Love") == 0) {
+                response.act = 3;
             }
             if (response.value == "true") {
                 response.value = true;

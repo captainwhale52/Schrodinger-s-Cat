@@ -18,6 +18,10 @@ module SchrodingersCat {
             }
             if (response.name.indexOf("Asthma") == 0) {
                 response.act = 1;
+            } else if (response.name.indexOf("Cat") == 0) {
+                response.act = 2;
+            } else if (response.name.indexOf("Love") == 0) {
+                response.act = 3;
             }
             if (response.value == "true") {
                 response.value = true;
