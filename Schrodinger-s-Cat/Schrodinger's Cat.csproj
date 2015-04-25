@@ -18,6 +18,8 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="content\image\bg_chapter3.jpg" />
+    <Content Include="content\image\bg_chapter3_blur.jpg" />
     <Content Include="content\image\bg_chapter1.jpg" />
     <Content Include="content\image\bg_chapter1_blur.jpg" />
     <Content Include="content\image\bg_frontcover.jpg" />
@@ -156,7 +158,7 @@
     <Content Include="psd\favicon.psd" />
     <Content Include="core\php\variable.php" />
     <Content Include="core\php\variables.php" />
-    <Content Include="images.psd" />
+    <Content Include="psd\images.psd" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

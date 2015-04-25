@@ -33,10 +33,13 @@ module SchrodingersCat {
         renderChapter(chapter: Chapter): any {
             var that: MainHeader = this;
             if (SCV.getViewType() == ViewType.Front) {
-                
-            } else {
                 var template = _.template(SCVMainHeaderTemplate);
                 var data = {
+                    header: '',
+                };
+            } else {
+                var template = _.template(SCVMainHeaderTemplate);
+                data = {
                     header: chapter.get('name'),
                 };
             }

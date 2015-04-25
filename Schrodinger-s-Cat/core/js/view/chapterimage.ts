@@ -33,7 +33,21 @@ module SchrodingersCat {
         renderChapter(chapter: Chapter): any {
             var that: ChapterImage = this;
             if (SCV.getViewType() == ViewType.Front) {
-
+                if(SCV.getViewType() == ViewType.Front) {
+                    var template = _.template(SCVChapterImageTemplate);
+                    var data = {
+                        image: CONTENT_IMAGE_URL + 'bg_frontcover.jpg',
+                        image_blur: CONTENT_IMAGE_URL + 'bg_frontcover_blur.jpg'
+                    };
+                    that.$el.html(template(data));
+                } else {
+                    var template = _.template(SCVChapterImageTemplate);
+                    var data = {
+                        image: CONTENT_IMAGE_URL + 'bg_chapter1.jpg',
+                        image_blur: CONTENT_IMAGE_URL + 'bg_chapter1_blur.jpg'
+                    };
+                    that.$el.html(template(data));
+                }
             } else {
                 var template = _.template(SCVChapterImageTemplate);
                 var data = {

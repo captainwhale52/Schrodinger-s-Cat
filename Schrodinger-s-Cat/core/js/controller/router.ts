@@ -29,10 +29,12 @@ module SchrodingersCat {
             */
 
             SCP.pauseBG();
+
+            SCM.fetchVariables(0);
         }
         act(cnum: any) {
             cnum = parseInt(cnum);
-            
+            SCP.pauseBG();
             SCV.getLoader().show();
             console.log("we have loaded act " + cnum);
             SCV.setViewType(ViewType.Content);
