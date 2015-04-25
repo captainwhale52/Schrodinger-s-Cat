@@ -1,0 +1,54 @@
+﻿@media all {
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'bonvenocflight', sans-serif;
+        font-size: 18px;
+        line-height: 1.6em;
+        text-align: center;
+        color: #c4b7c8;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    img, div {
+        border: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    div {
+        display: block;
+    }
+
+    a {
+        text-decoration: none;
+        color: #c4b7c8;
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: normal;
+    }
+
+    h1 {
+        font-size: x-large;
+        line-height: 1.4em;
+        margin: 10px 0 0 0;
+        display: block;
+    }
+
+    h2 {
+        line-height: 1.2em;
+        margin: 15px 0 0 0;
+        display: block;
+    }
+
+    img { 
+        pointer-events: none;
+    }
+}

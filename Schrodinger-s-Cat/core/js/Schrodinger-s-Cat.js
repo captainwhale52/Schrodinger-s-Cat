@@ -15379,7 +15379,7 @@ var SchrodingersCat;
             var that = this;
             that.setSystemScrolling(false);
             //$("html, body").animate({ scrollTop: $(window).scrollTop() + 180 }, 750).promise().done(function () {
-            $("html, body").animate({ scrollTop: that.passageScrollElement.offset().top - 220 }, 1250).promise().done(function () {
+            $("html, body").animate({ scrollTop: that.passageScrollElement.offset().top - 80 }, 1250).promise().done(function () {
                 that.getMainHeader().checkVisibility();
                 that.setSystemScrolling(false);
             });
@@ -15686,7 +15686,7 @@ var SchrodingersCat;
         }
         ChapterHeader.prototype.render = function () {
             var that = this;
-            if (SCV.getViewType() == 0 /* Front */) {
+            if (SCV.getViewType() == ViewType.Front) {
                 var template = _.template(SCVChapterHeaderTemplateForCover);
                 var data = {
                     cnum: 'Perspective Demons',
@@ -15707,7 +15707,7 @@ var SchrodingersCat;
         };
         ChapterHeader.prototype.renderChapter = function (chapter) {
             var that = this;
-            if (SCV.getViewType() == 0 /* Front */) {
+            if (SCV.getViewType() == ViewType.Front) {
             }
             else {
                 var template = _.template(SCVChapterHeaderTemplate);
@@ -15722,7 +15722,7 @@ var SchrodingersCat;
         };
         ChapterHeader.prototype.resize = function () {
             var that = this;
-            if (SCV.getViewType() == 0 /* Front */) {
+            if (SCV.getViewType() == ViewType.Front) {
                 that.$el.css({ top: Math.round(SCV.getWrapperHeight() / 2 - 50) });
                 that.$el.css({ 'padding-top': 30, 'padding-bottom': 20 });
             }
@@ -15736,7 +15736,7 @@ var SchrodingersCat;
             that.$el.off('click');
             that.$el.on('click', function () {
                 SCV.setSystemScrolling(true);
-                if (SCV.getViewType() == 0 /* Front */) {
+                if (SCV.getViewType() == ViewType.Front) {
                     SCR.navigate('act/1', { trigger: true, replace: true });
                 }
                 else {

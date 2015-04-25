@@ -1,0 +1,104 @@
+﻿@media all {
+    #main-content {
+        font-family:'Merriweather', serif;
+        position: absolute;
+        top: 100px;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .chapter-text {
+        font-size: 16px;
+        padding: 60px 25px 40px 25px;
+        letter-spacing: 0.01em;
+        
+        display: block;
+        text-align: left;
+        color: #d7ccd0;
+        margin: 0 auto 0 auto;
+        background-color: #453748;
+        opacity: 0.925;
+    }
+
+    .chapter-text i {
+        font-weight: 600;
+        padding-right: 10px;
+    }
+
+    .chapter-text div {
+        max-width: 620px;
+        margin: 0 auto;
+    }
+
+    .caps {
+        font-size: 65px;
+        display: inline-block;
+        margin: 15px 10px 0 3px;
+        font-weight: 300;
+        float: left;
+    }
+    .choice-wrapper {
+        max-width: 640px;
+    }
+
+    .choice {
+        cursor: pointer;
+        color: #d5cfe5;
+        font-weight: 600;
+        background-color: #4e485c;
+        border-radius: 5px 5px 5px 5px;
+        border: 2px solid #25232a;
+    }
+}
+
+@media screen and (max-width: 640px)  {
+    .chapter-text {
+        
+    }
+
+    .chapter-text p {
+        margin: 0 0 12px 0;
+    }
+
+    .choice-wrapper {
+        margin: 0 0 20px 0 !important;
+    }
+
+    .choice {
+        margin: 10px 0 10px 0 !important;
+        padding: 5px 5px 5px 5px !important;
+    }
+    
+}
+
+@media screen and (min-width: 641px)  {
+    .chapter-text {
+        line-height: 40px;
+    }
+
+    .chapter-text p {
+        margin: 0 0 22px 0;
+    }
+
+    .choice-wrapper {
+        max-width: 640px !important;
+        margin: 10px 20px 20px 10px !important;
+    }
+
+    .choice {
+        margin: 10px 5px 10px 5px !important;
+        padding: 5px 10px 5px 10px !important;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .chapter-text {
+        line-height: 35px !important;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .chapter-text {
+        line-height: 30px !important;
+    }
+}
