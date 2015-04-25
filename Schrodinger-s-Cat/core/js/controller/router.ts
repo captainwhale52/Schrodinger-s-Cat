@@ -4,6 +4,7 @@ module SchrodingersCat {
         constructor(options?: Backbone.RouterOptions) {
             this.routes = {
                 "": "home",
+                "home": "home",
                 "act/:cnum": "act",
                 //"map/:zoom/:lat/:lng/:interval/:start/:end/:cur": "map",
             }
@@ -17,6 +18,7 @@ module SchrodingersCat {
 
         }
         home() {
+            this.navigate("/home", { trigger: false, replace: true });
             SCV.getLoader().show();
             console.log("we have loaded the home page");
             SCV.setViewType(ViewType.Front);

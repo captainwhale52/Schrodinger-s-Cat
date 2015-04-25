@@ -107,4 +107,8 @@
         width: 40px;
     }
 
+    .nav-chapter {
+        cursor: pointer;
+    }
+
 }

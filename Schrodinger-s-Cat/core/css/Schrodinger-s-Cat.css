@@ -172,6 +172,10 @@
         width: 40px;
     }
 
+    .nav-chapter {
+        cursor: pointer;
+    }
+
 }
 @media all {
     /* Main Header */
