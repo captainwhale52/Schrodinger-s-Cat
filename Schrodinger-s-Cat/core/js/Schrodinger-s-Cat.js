@@ -16196,10 +16196,10 @@ var SchrodingersCat;
             that.mChapters.add(new SchrodingersCat.Chapter({ name: "HOME", cid: 0, hash: "#home", cnum: "", passage: "", visible: true, hide: false }));
             that.mChapters.add(new SchrodingersCat.Chapter({ name: "Asthma", cid: 1, hash: "#act/1", cnum: "01", passage: "asthma-begin", visible: true, hide: false, image: "bg_chapter1.jpg", blur: "bg_chapter1_blur.jpg" }));
             if (Asthma_Complete == true) {
-                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Cat", cid: 2, hash: "#act/2", cnum: "02", passage: "cat-begin", visible: true, hide: false, image: "bg_frontcover.jpg", blur: "bg_frontcover_blur.jpg" }));
+                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Cat", cid: 2, hash: "#act/2", cnum: "02", passage: "cat-begin", visible: true, hide: false, image: "bg_chapter2.jpg", blur: "bg_chapter2_blur.jpg" }));
             }
             else {
-                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Cat", cid: 2, hash: "#act/2", cnum: "02", passage: "cat-begin", visible: false, hide: false, image: "bg_frontcover.jpg", blur: "bg_frontcover_blur.jpg" }));
+                that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Cat", cid: 2, hash: "#act/2", cnum: "02", passage: "cat-begin", visible: false, hide: false, image: "bg_chapter2.jpg", blur: "bg_chapter2_blur.jpg" }));
             }
             if (Cat_Complete == true) {
                 that.mChapters.add(new SchrodingersCat.Chapter({ name: "The Love", cid: 3, hash: "#act/3", cnum: "03", passage: "love-begin", visible: true, hide: false, image: "bg_chapter3.jpg", blur: "bg_chapter3_blur.jpg" }));
@@ -16959,7 +16959,7 @@ var SchrodingersCat;
                 that.mPassages.add(passage);
             }
             else if (cnum == 3) {
-                var passage = new SchrodingersCat.Passage({ name: 'love-begin', isLast: false, context: '<p>When you open your eyes, it\'s already dark outside. Only small amount of moon light comes through the gaps of the boarded wooden panels.</i> The heavy air in the room occasionally vibrates from far sirens. You wake up, and walk to the window. The ground is wet and cold.</p>' });
+                var passage = new SchrodingersCat.Passage({ name: 'love-begin', isLast: false, first: 'W', context: '<p>hen you open your eyes, it\'s already dark outside. Only small amount of moon light comes through the gaps of the boarded wooden panels.</i> The heavy air in the room occasionally vibrates from far sirens. You wake up, and walk to the window. The ground is wet and cold.</p>' });
                 var choices = new SchrodingersCat.Choices();
                 choices.add(new SchrodingersCat.Choice({ context: 'Open the window.', next: 'love-window', variable: '', value: '' }));
                 passage.set({ choices: choices });

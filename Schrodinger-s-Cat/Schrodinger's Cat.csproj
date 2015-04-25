@@ -18,6 +18,8 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="content\image\bg_chapter2.jpg" />
+    <Content Include="content\image\bg_chapter2_blur.jpg" />
     <Content Include="content\image\bg_chapter3.jpg" />
     <Content Include="content\image\bg_chapter3_blur.jpg" />
     <Content Include="content\image\bg_chapter1.jpg" />
@@ -159,6 +161,7 @@
     <Content Include="core\php\variable.php" />
     <Content Include="core\php\variables.php" />
     <Content Include="psd\images.psd" />
+    <Content Include="Schrodinger-s-Cat Story Structure.pdf" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
