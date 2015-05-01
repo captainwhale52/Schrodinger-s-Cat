@@ -15379,7 +15379,7 @@ var SchrodingersCat;
             var that = this;
             that.setSystemScrolling(false);
             //$("html, body").animate({ scrollTop: $(window).scrollTop() + 180 }, 750).promise().done(function () {
-            $("html, body").animate({ scrollTop: that.passageScrollElement.offset().top - 180 }, 1500).promise().done(function () {
+            $("html, body").animate({ scrollTop: that.passageScrollElement.offset().top - 80 }, 1050).promise().done(function () {
                 that.getMainHeader().checkVisibility();
                 that.setSystemScrolling(false);
             });
@@ -16801,14 +16801,14 @@ var SchrodingersCat;
                 that.mPassages.add(passage);
                 // act 2: cat-go-outside
                 if (Cat_Go_Outside_With_Inhaler) {
-                    var passage = new SchrodingersCat.Passage({ name: 'cat-go-outside', isLast: false, context: '<p>You leave the door for the first time in 6 months. It\'s one small step for others, one giant leap for you. Covering your mouth with right hand, you advance forward across the street. The dust is thicker than you thought. After a few seconds, everything around you fades into dust, and you get lost. It\'s hard to breathe. Taking out your inhaler from your jacket, you spout gas into your mouth. Nothing happens. You shake the inhaler and try again, but nothing comes out.</p>' });
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-go-outside', isLast: false, context: '<p>You leave the door for the first time in 6 months. It\'s one small step for others, one giant leap for you. At the same time, you remember mom\'s word not to go outside. Covering your mouth with right hand, you advance forward across the street. The dust is thicker than you thought. After a few seconds, everything around you fades into dust, and you get lost. It\'s hard to breathe. Taking out your inhaler from your jacket, you spout gas into your mouth. Nothing happens. You shake the inhaler and try again, but nothing comes out.</p>' });
                     var choices = new SchrodingersCat.Choices();
                     choices.add(new SchrodingersCat.Choice({ context: '"Damn!"', next: 'cat-outside-pass-out', variable: '', value: '' }));
                     passage.set({ choices: choices });
                     that.mPassages.add(passage);
                 }
                 else {
-                    var passage = new SchrodingersCat.Passage({ name: 'cat-go-outside', isLast: false, context: '<p>You leave the door for the first time in 6 months. It\'s one small step for others, one giant leap for you. Covering your mouth with right hand, you advance forward across the street. The dust is thicker than you thought. After a few seconds, everything around you fades into dust, and you get lost. It\'s hard to breathe. You search through your pocket, but you realize you forgot to bring an inhaler.</p>' });
+                    var passage = new SchrodingersCat.Passage({ name: 'cat-go-outside', isLast: false, context: '<p>You leave the door for the first time in 6 months. It\'s one small step for others, one giant leap for you. At the same time, you remember mom\'s word not to go outside. Covering your mouth with right hand, you advance forward across the street. The dust is thicker than you thought. After a few seconds, everything around you fades into dust, and you get lost. It\'s hard to breathe. You search through your pocket, but you realize you forgot to bring an inhaler.</p>' });
                     var choices = new SchrodingersCat.Choices();
                     choices.add(new SchrodingersCat.Choice({ context: '"Damn!"', next: 'cat-outside-pass-out', variable: '', value: '' }));
                     passage.set({ choices: choices });
@@ -16867,7 +16867,7 @@ var SchrodingersCat;
                 // act 2: cat-ask-mother-bruise
                 var passage = new SchrodingersCat.Passage({ name: 'cat-ask-mother-bruise', isLast: false, context: '<p>"It\'s not like that, Gilly."</p><p>She turns her face away from you.</p><p>"Please, go back to your room. Let\'s talk later. Here, I got two more inhalers."</p><p>She places them in your right hand and closes it. <i>Mom...</i> You go upstairs, back to your room, and close the door. Your hands are trembling.</p>' });
                 var choices = new SchrodingersCat.Choices();
-                choices.add(new SchrodingersCat.Choice({ context: 'You lift your right arm, and throw the inhalers out the window.', next: 'cat-throw-inhaler', variable: 'Cat_Throw_Inhaler_Window', value: '' }));
+                choices.add(new SchrodingersCat.Choice({ context: 'You lift your right arm, and throw the inhalers out the window.', next: 'cat-throw-inhaler', variable: 'Cat_Throw_Inhaler_Window', value: 'true' }));
                 choices.add(new SchrodingersCat.Choice({ context: 'You lift your left arm, and strike the door with your fist.', next: 'cat-slam-door', variable: '', value: '' }));
                 passage.set({ choices: choices });
                 that.mPassages.add(passage);

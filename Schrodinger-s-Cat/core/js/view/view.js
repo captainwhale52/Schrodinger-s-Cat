@@ -90,7 +90,7 @@ var SchrodingersCat;
             var that = this;
             that.setSystemScrolling(false);
             //$("html, body").animate({ scrollTop: $(window).scrollTop() + 180 }, 750).promise().done(function () {
-            $("html, body").animate({ scrollTop: that.passageScrollElement.offset().top - 180 }, 1500).promise().done(function () {
+            $("html, body").animate({ scrollTop: that.passageScrollElement.offset().top - 80 }, 1050).promise().done(function () {
                 that.getMainHeader().checkVisibility();
                 that.setSystemScrolling(false);
             });
